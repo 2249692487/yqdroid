@@ -1,5 +1,6 @@
 package com.ywqln.yqdroid.ui;
 
+import android.content.Intent;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -32,10 +33,7 @@ import io.reactivex.disposables.Disposable;
  * <p>
  * 描述:登录界面
  */
-
 public class LoginActivity extends BaseActivity {
-
-
     @BindView(R.id.et_account)
     EditText mEditAccount;
     @BindView(R.id.et_password)
@@ -55,6 +53,7 @@ public class LoginActivity extends BaseActivity {
      * 双击退出时间初始值
      */
     private long exitTime = 0;
+
     @Override
     protected int layoutResId() {
         return R.layout.activity_login;
@@ -90,6 +89,14 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void loginClick() {
+
+        if(true){
+            Intent intent = new Intent(this,NestedScrollViewActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+
         String account = mEditAccount.getText().toString().trim();
         String password = mEditPassword.getText().toString().trim();
         boolean approved = verificationAccountAndPassword(account, password);
