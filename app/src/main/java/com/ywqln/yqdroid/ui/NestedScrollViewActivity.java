@@ -36,6 +36,8 @@ public class NestedScrollViewActivity extends BaseActivity {
     @Override
     protected void initComplete() {
 
+        // fixme：这里是备用方式
+
 //        boxScrollView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View view, MotionEvent motionEvent) {
