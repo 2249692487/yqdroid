@@ -6,10 +6,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by yanwenqiang on 2017/6/22.
- * <p>
  * 描述:加密工具
+ * <p>
+ *
  * @author yanwenqiang
+ * @date 2017/12/1
  */
 public class EncryptUtil {
 

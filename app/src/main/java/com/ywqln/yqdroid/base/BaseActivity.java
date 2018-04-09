@@ -34,7 +34,6 @@ import io.reactivex.schedulers.Schedulers;
  * @author yanwenqiang
  * @date 2017/11/28
  */
-
 public abstract class BaseActivity extends RxAppCompatActivity {
 
     /**
@@ -45,6 +44,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      * toast
      */
     protected Toast toast;
+
     @Override
     public Context createConfigurationContext(Configuration overrideConfiguration) {
         overrideConfiguration.setToDefaults();
@@ -128,7 +128,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     /**
-     * 更新标题，调用{@link #setToolbarTitle()}、{@link #setToolbarTitle(int)}、{@link #setToolbarTitle(CharSequence, boolean)}后有效，
+     * 更新标题，调用{@link #setToolbarTitle()}、{@link #setToolbarTitle(int)}、{@link
+     * #setToolbarTitle(CharSequence, boolean)}后有效，
      * 或者调用{@link #setSupportActionBar(Toolbar)}后有效
      *
      * @param title 标题
@@ -172,6 +173,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     public final <T> SsoTransformer<T> bindSSOTransformer() {
         return new SsoTransformer<>(this.<T>bindUntilEvent(ActivityEvent.DESTROY));
     }
+
     protected void loadingDialog() {
         loadingDialog(StringUtil.Empty);
     }
@@ -230,7 +232,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      */
     protected void hideSoftInPut(View view) {
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

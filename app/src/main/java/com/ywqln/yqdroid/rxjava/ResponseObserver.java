@@ -8,7 +8,6 @@ import io.reactivex.annotations.NonNull;
  * <p>
  * Created by yanwenqiang on 2017/8/31
  */
-
 public abstract class ResponseObserver<T> implements Observer<T> {
 
     @Override

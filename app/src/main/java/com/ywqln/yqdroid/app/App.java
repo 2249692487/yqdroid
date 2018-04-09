@@ -12,12 +12,12 @@ import com.ywqln.yqdroid.BuildConfig;
 import com.ywqln.yqdroid.util.SysUtil;
 
 /**
- * {@link Application}
+ * 描述:项目Application {@link Application}
+ * <p>
  *
  * @author yanwenqiang
  * @date 2017/11/28
  */
-
 public class App extends Application {
 
     /**

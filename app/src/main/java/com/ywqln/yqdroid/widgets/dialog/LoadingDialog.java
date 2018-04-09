@@ -5,12 +5,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
+
 import com.ywqln.yqdroid.R;
 
 /**
- * Created by yanwenqiang on 2017/12/3.
- * <p>
  * 描述:自定义dialog
+ * <p>
+ *
+ * @author yanwenqiang
+ * @date 2015/6/26.
  */
 public class LoadingDialog extends AlertDialog {
 

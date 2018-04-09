@@ -11,14 +11,13 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-
 /**
- * 管理请求报文头
+ * 描述:管理请求报文头
+ * <p>
  *
  * @author yanwenqiang
- * @date 2017/12/03
+ * @date 2017/11/28
  */
-
 public class HeaderManagerInterceptor implements Interceptor {
 
     private Context mContext;

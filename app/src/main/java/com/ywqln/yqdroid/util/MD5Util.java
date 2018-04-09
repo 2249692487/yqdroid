@@ -6,8 +6,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * MD5加密
- * Created by yanwenqiang on 15/5/7.
+ * 描述:MD5加密
+ * <p>
+ *
+ * @author yanwenqiang
+ * @date 2017/12/1
  */
 public class MD5Util {
 

@@ -9,7 +9,7 @@ import java.util.List;
  * 描述:登录响应Do
  * <p>
  *
- * @author zhangfan3
+ * @author yanwenqiang
  * @date 2017/12/1
  */
 public class LoginRespDo {

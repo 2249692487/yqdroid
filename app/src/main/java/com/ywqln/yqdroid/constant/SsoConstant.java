@@ -3,6 +3,7 @@ package com.ywqln.yqdroid.constant;
 /**
  * 描述：SSO接口常量
  * <p>
+ *
  * @author yanwenqiang
  * @date 2017/12/5
  */

@@ -4,9 +4,9 @@ package com.ywqln.yqdroid.rxjava;
  * Created by yanwenqiang on 17/6/19.
  * <p>
  * 描述:Common API Exception
+ *
  * @author yanwenqiang
  */
-
 public final class ApiException extends RuntimeException {
 
     /**

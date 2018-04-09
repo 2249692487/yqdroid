@@ -13,6 +13,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by yanwenqiang on 2017/10/26.
  * <p>
  * 描述:HouseKeeper的请求数据转换
+ *
  * @author yanwenqiang
  */
 public class HkTransformer<T> implements ObservableTransformer<HkApiRespDo<T>, T> {
@@ -33,7 +34,8 @@ public class HkTransformer<T> implements ObservableTransformer<HkApiRespDo<T>, T
                 .map(thkApiRespDo -> {
                     mErrorCode = 200;
                     if (thkApiRespDo.getRCode() != mErrorCode) {
-                        throw new ApiException(thkApiRespDo.getRCode(), thkApiRespDo.getRMessage().toString());
+                        throw new ApiException(thkApiRespDo.getRCode(),
+                                thkApiRespDo.getRMessage().toString());
                     }
                     return thkApiRespDo.getResult();
                 })

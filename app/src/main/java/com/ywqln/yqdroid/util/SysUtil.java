@@ -8,15 +8,13 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
-
 /**
- * 系统方法工具
+ * 描述:系统方法工具
+ * <p>
  *
  * @author yanwenqiang
- * @date 2017/11/28
+ * @date 2015/6/26.
  */
-
-
 public final class SysUtil {
 
     private SysUtil() {
@@ -30,7 +28,8 @@ public final class SysUtil {
      * @return DevicesId
      */
     public static String getDevicesId(Context context) {
-        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(
+                Context.TELEPHONY_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
 

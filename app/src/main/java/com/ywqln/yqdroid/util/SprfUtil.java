@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by yanwenqiang on 2017/12/3.
+ * 描述:SharedPreferences工具类
  * <p>
- * 描述: SharedPreferences工具类
- * @author zhangfan3
+ *
+ * @author yanwenqiang
+ * @date 2017/12/1
  */
 public class SprfUtil {
 
@@ -48,8 +49,9 @@ public class SprfUtil {
     public static void setLong(Context context, String key, long value) {
         editor(context).putLong(key, value).commit();
     }
-    public static long getLong(Context context,String key,long value){
-        return preferences(context).getLong(key,value);
+
+    public static long getLong(Context context, String key, long value) {
+        return preferences(context).getLong(key, value);
     }
 
     public static long getString(Context context, String key, long defVale) {

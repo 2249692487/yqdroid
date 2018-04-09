@@ -3,10 +3,11 @@ package com.ywqln.yqdroid.entity.req;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by yanwenqiang on 2017/12/1.
- * <p>
  * 描述:登录请求
+ * <p>
+ *
  * @author yanwenqiang
+ * @date 2017/12/1
  */
 public class StaffLoginReqDo {
 
@@ -19,7 +20,7 @@ public class StaffLoginReqDo {
     @SerializedName("Sign")
     private String sign;
 
-    public StaffLoginReqDo(String appNo, String account, String password,String sign) {
+    public StaffLoginReqDo(String appNo, String account, String password, String sign) {
         this.appNo = appNo;
         this.account = account;
         this.password = password;

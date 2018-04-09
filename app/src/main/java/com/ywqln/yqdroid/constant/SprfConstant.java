@@ -1,9 +1,11 @@
 package com.ywqln.yqdroid.constant;
 
 /**
- * Created by yanwenqiang on 2015/5/6.
+ * 描述:SharePrefrence常量
  * <p>
- * 描述:harePrefrence常量
+ *
+ * @author yanwenqiang
+ * @date 2017/12/1
  */
 public final class SprfConstant {
 

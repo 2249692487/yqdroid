@@ -14,9 +14,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by yanwenqiang on 2017/12/2.
- * <p>
  * 描述:HouseKeeper接口的请求头拦截器
+ * <p>
+ *
+ * @author yanwenqiang
+ * @date 2017/11/28
  */
 public class HkApiHeaderInterceptor implements Interceptor {
 
@@ -35,13 +37,16 @@ public class HkApiHeaderInterceptor implements Interceptor {
                 // channel:     渠道
                 .addHeader("channel", "faceCollect")
                 // CompanyCode: 城市code
-                .addHeader("CompanyCode", SprfUtil.getString(mContext,SprfConstant.CITY_CODE,StringUtil.Empty))
+                .addHeader("CompanyCode",
+                        SprfUtil.getString(mContext, SprfConstant.CITY_CODE, StringUtil.Empty))
                 // Udid:        设备串号
-                .addHeader("Udid", SprfUtil.getString(mContext, SprfConstant.UDID, StringUtil.Empty))
+                .addHeader("Udid",
+                        SprfUtil.getString(mContext, SprfConstant.UDID, StringUtil.Empty))
                 // ClientVer:   当前版本号
                 .addHeader("ClientVer", BuildConfig.VERSION_NAME)
                 // HKSession:   登录接口返回
-                .addHeader("HKSession", SprfUtil.getString(mContext, SprfConstant.HK_SESSION, StringUtil.Empty));
+                .addHeader("HKSession",
+                        SprfUtil.getString(mContext, SprfConstant.HK_SESSION, StringUtil.Empty));
         return chain.proceed(requestBuilder.build());
     }
 }

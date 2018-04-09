@@ -3,8 +3,10 @@ package com.ywqln.yqdroid.util;
 import android.text.TextUtils;
 
 /**
- * @author yanwq
- * @description 文本处理
+ * 描述:文本处理
+ * <p>
+ *
+ * @author yanwenqiang
  * @date 2015/6/26.
  */
 public class StringUtil {

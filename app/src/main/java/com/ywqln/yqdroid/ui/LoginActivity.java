@@ -29,9 +29,11 @@ import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 
 /**
- * Created by yanwenqiang on 2017/12/1.
- * <p>
  * 描述:登录界面
+ * <p>
+ *
+ * @author yanwenqiang
+ * @date 2017/12/1
  */
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.et_account)
@@ -82,7 +84,8 @@ public class LoginActivity extends BaseActivity {
             mIvPasswordShow.setImageResource(R.drawable.lock_btn_eye_open);
         } else {
             INPUT_TYPE_FLAG = true;
-            mEditPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            mEditPassword.setInputType(
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             mEditPassword.setSelection(mEditPassword.getText().length());
             mIvPasswordShow.setImageResource(R.drawable.lock_btn_eye_close);
         }
@@ -90,8 +93,8 @@ public class LoginActivity extends BaseActivity {
 
     private void loginClick() {
 
-        if(true){
-            Intent intent = new Intent(this,NestedScrollViewActivity.class);
+        if (true) {
+            Intent intent = new Intent(this, NestedScrollViewActivity.class);
             startActivity(intent);
             return;
         }
@@ -108,7 +111,8 @@ public class LoginActivity extends BaseActivity {
             return;
         }
         loadingDialog();
-        String sign = MD5Util.md5(SsoConstant.APP_NO_SECRET_KEY + account + password + SsoConstant.SECRET_KEY);
+        String sign = MD5Util.md5(
+                SsoConstant.APP_NO_SECRET_KEY + account + password + SsoConstant.SECRET_KEY);
         ApiCreator.create(UserApi.class)
                 .login(new StaffLoginReqDo(SsoConstant.APP_NO, account, password, sign))
                 .compose(this.applySchedulers())
@@ -142,10 +146,6 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * 验证用户名密码
-     *
-     * @param account
-     * @param password
-     * @return
      */
     private boolean verificationAccountAndPassword(String account, String password) {
         if (TextUtils.isEmpty(account)) {
@@ -161,14 +161,15 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * 保存用户登录的信息
-     *
-     * @param loginRespDo
      */
     private void saveUserInfo(LoginRespDo loginRespDo, String devicesId) {
         SprfUtil.setString(LoginActivity.this, SprfConstant.HK_SESSION, loginRespDo.getSessionId());
-        SprfUtil.setString(LoginActivity.this, SprfConstant.CITY_CODE, loginRespDo.getStaff().getCompanyCode());
-        SprfUtil.setString(LoginActivity.this, SprfConstant.COMPANY_NAME, loginRespDo.getStaff().getCompanyCode());
-        SprfUtil.setString(LoginActivity.this, SprfConstant.STAFF_NO, loginRespDo.getStaff().getStaffNo());
+        SprfUtil.setString(LoginActivity.this, SprfConstant.CITY_CODE,
+                loginRespDo.getStaff().getCompanyCode());
+        SprfUtil.setString(LoginActivity.this, SprfConstant.COMPANY_NAME,
+                loginRespDo.getStaff().getCompanyCode());
+        SprfUtil.setString(LoginActivity.this, SprfConstant.STAFF_NO,
+                loginRespDo.getStaff().getStaffNo());
         SprfUtil.setString(LoginActivity.this, SprfConstant.UDID, devicesId);
     }
 

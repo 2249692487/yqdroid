@@ -13,6 +13,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by yanwenqiang on 2017/10/26.
  * <p>
  * 描述:HouseKeeper的请求数据转换
+ *
  * @author yanwenqiang
  */
 public class SsoTransformer<T> implements ObservableTransformer<SsoApiRespDo<T>, T> {
@@ -32,8 +33,9 @@ public class SsoTransformer<T> implements ObservableTransformer<SsoApiRespDo<T>,
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(thkApiRespDo -> {
                     mSucCode = 0;
-                    if (thkApiRespDo.getResultNo()  != mSucCode) {
-                        throw new ApiException(thkApiRespDo.getResultNo(), thkApiRespDo.getMessage().toString());
+                    if (thkApiRespDo.getResultNo() != mSucCode) {
+                        throw new ApiException(thkApiRespDo.getResultNo(),
+                                thkApiRespDo.getMessage().toString());
                     }
                     return thkApiRespDo.getResult();
                 })

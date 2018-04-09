@@ -15,14 +15,13 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 /**
- * Api创建
+ * 描述:Api创建
+ * <p>
  *
  * @author yanwenqiang
  * @date 2017/11/28
  */
-
 public final class ApiCreator {
 
     private static volatile ApiCreator sApiCreator;
@@ -67,7 +66,7 @@ public final class ApiCreator {
      */
     public static <T> T create(Class<T> clazz) {
         String host = sApiCreator.hostManagerCallBack.intercept(clazz);
-        if(!TextUtils.isEmpty(host)){
+        if (!TextUtils.isEmpty(host)) {
             return sApiCreator.mBuilder.baseUrl(host).build().create(clazz);
         }
         return sApiCreator.mBuilder.build().create(clazz);
