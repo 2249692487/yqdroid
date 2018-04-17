@@ -3,6 +3,7 @@ package com.ywqln.yqdroid.ui;
 import android.content.Intent;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
@@ -92,6 +93,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void loginClick() {
+
+        String deviceId = AppUtil.getDevicesId(LoginActivity.this);
+        Log.d("deviceId", "devicesId：" + deviceId);
+
 
         if (true) {
             Intent intent = new Intent(this, NestedScrollViewActivity.class);
