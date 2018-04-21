@@ -27,6 +27,8 @@
         <activity
             android:name=".ui.NestedScrollViewActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.BackForegroundActivity"
+                  android:screenOrientation="portrait"/>
         <!--<activity android:name=".ui.LoginActivity" android:screenOrientation="portrait"/>-->
 
     </application>

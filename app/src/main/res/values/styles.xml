@@ -13,4 +13,9 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">#ffffffff</item>
     </style>
+
+    <!--图片设置圆角-->
+    <declare-styleable name="RoundCornerImageView">
+        <attr name="rect_adius" format="float" />
+    </declare-styleable>
 </resources>
