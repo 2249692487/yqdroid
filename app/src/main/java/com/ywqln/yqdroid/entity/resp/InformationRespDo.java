@@ -1,6 +1,6 @@
 package com.ywqln.yqdroid.entity.resp;
 
-import com.ywqln.yqdroid.entity.resp.model.InformationModel;
+import com.ywqln.yqdroid.entity.resp.model.CommentModel;
 
 import java.util.List;
 
@@ -10,13 +10,17 @@ import java.util.List;
  * 描述:待描述
  */
 public class InformationRespDo {
-    private List<InformationModel> data;
+    private List<CommentModel> data;
 
-    public List<InformationModel> getData() {
+    public InformationRespDo(List<CommentModel> data) {
+        this.data = data;
+    }
+
+    public List<CommentModel> getData() {
         return data;
     }
 
-    public void setData(List<InformationModel> data) {
+    public void setData(List<CommentModel> data) {
         this.data = data;
     }
 }

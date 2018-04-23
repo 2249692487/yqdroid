@@ -1,5 +1,6 @@
 package com.ywqln.yqdroid.entity.resp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,12 @@ public class CommentModel {
     private List<CommentModel> comment_son;
     // 回复名字
     private String oNickname;
+
+    private boolean colsed = false;
+
+    public CommentModel() {
+        comment_son = new ArrayList<>();
+    }
 
     public String getProductId() {
         return productId;
@@ -100,5 +107,13 @@ public class CommentModel {
 
     public void setoNickname(String oNickname) {
         this.oNickname = oNickname;
+    }
+
+    public boolean isColsed() {
+        return colsed;
+    }
+
+    public void setColsed(boolean colsed) {
+        this.colsed = colsed;
     }
 }
