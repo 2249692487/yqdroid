@@ -98,10 +98,17 @@ public class LoginActivity extends BaseActivity {
         Log.d("deviceId", "devicesId：" + deviceId);
 
         if (true) {
-            Intent intent = new Intent(this, BackForegroundActivity.class);
+            Intent intent = new Intent(this, MessageActivity.class);
             startActivity(intent);
             return;
         }
+
+//        if (true) {
+//            Intent intent = new Intent(this, BackForegroundActivity.class);
+//            startActivity(intent);
+//            return;
+//        }
+
 //        if (true) {
 //            Intent intent = new Intent(this, NestedScrollViewActivity.class);
 //            startActivity(intent);
