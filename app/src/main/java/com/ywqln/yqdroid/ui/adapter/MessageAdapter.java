@@ -81,11 +81,6 @@ public class MessageAdapter extends BaseAdapter {
             View commentLayout = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.item_comment, null);
 
-//            TextView tvMasterUser = ViewHolder.get(convertView, R.id.tv_masterUser);
-//            TextView tvReplayUser = ViewHolder.get(convertView, R.id.tv_replayUser);
-//            TextView tvContent = ViewHolder.get(convertView, R.id.tv_content);
-//            TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
-
             CommentModel comment = commentList.get(i);
 
             TextView tvMasterUser = commentLayout.findViewById(R.id.tv_masterUser);
@@ -118,19 +113,16 @@ public class MessageAdapter extends BaseAdapter {
         button.setTag(position);
         button.setText(defaultTxt);
         ll_comment.addView(button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int index = (int) view.getTag();
-                boolean state = dataSource.get(index).isColsed();
-                dataSource.get(index).setColsed(!state);
-                dataSource.get(index).setNickname("修改了");
-                notifyDataSetChanged();
-                if (state) {
-                    button.setText("展开");
-                } else {
-                    button.setText("收起");
-                }
+        button.setOnClickListener(view -> {
+            int index = (int) view.getTag();
+            boolean state = dataSource.get(index).isColsed();
+            dataSource.get(index).setColsed(!state);
+            dataSource.get(index).setNickname("修改了");
+            notifyDataSetChanged();
+            if (state) {
+                button.setText("展开");
+            } else {
+                button.setText("收起");
             }
         });
     }
