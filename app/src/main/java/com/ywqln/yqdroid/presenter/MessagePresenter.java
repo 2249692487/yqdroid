@@ -20,6 +20,7 @@ public class MessagePresenter {
         commentModel1.setNickname("微凉");
         commentModel1.setUserId("457");
         commentModel1.setContent("嘿嘿");
+        commentModel1.setTime("1520565404");
 
         CommentModel commentModel2 = new CommentModel();
         commentModel2.setProductId("1150");
@@ -27,6 +28,7 @@ public class MessagePresenter {
         commentModel2.setNickname("L");
         commentModel2.setUserId("457");
         commentModel2.setContent("嗨");
+        commentModel2.setTime("1520565404");
 
 
         CommentModel commentModel3 = new CommentModel();
@@ -35,6 +37,7 @@ public class MessagePresenter {
         commentModel3.setNickname("微凉");
         commentModel3.setUserId("457");
         commentModel3.setContent("你好");
+        commentModel3.setTime("1520565404");
 
         CommentModel commentChild1 = new CommentModel();
         commentChild1.setProductId("1150");
@@ -43,6 +46,7 @@ public class MessagePresenter {
         commentChild1.setUserId("457");
         commentChild1.setContent("你好");
         commentChild1.setoNickname("L");
+        commentChild1.setTime("1520565404");
 
         CommentModel commentChild2 = new CommentModel();
         commentChild2.setProductId("1150");
@@ -51,6 +55,7 @@ public class MessagePresenter {
         commentChild2.setUserId("359");
         commentChild2.setContent("嘻嘻");
         commentChild2.setoNickname("微凉");
+        commentChild2.setTime("1520565404");
 
         commentModel3.getComment_son().add(commentChild1);
         commentModel3.getComment_son().add(commentChild2);

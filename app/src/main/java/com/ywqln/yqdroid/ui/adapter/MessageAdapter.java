@@ -140,7 +140,7 @@ public class MessageAdapter extends BaseAdapter {
             return "";
         }
         long time = Long.parseLong(mill);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String result = sdf.format(new Date(time));
         return result;
     }
