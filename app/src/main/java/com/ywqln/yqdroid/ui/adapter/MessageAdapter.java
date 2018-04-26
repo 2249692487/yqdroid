@@ -66,16 +66,18 @@ public class MessageAdapter extends BaseAdapter {
         List<CommentModel> commentList = comment.getComment_son();
         if (comment.getComment_son().size() > 0) {
             llComment.setVisibility(View.VISIBLE);
-            addCommentLayout(parent, convertView, llComment, commentList);
+            addCommentLayout(parent, position, llComment, commentList);
         }
 
         return convertView;
     }
 
-    private void addCommentLayout(ViewGroup parent, View convertView, LinearLayout ll_comment,
+    private void addCommentLayout(ViewGroup parent, int position, LinearLayout ll_comment,
             List<CommentModel> commentList) {
 
-        for (CommentModel item : commentList) {
+        boolean isClosed = dataSource.get(position).isColsed();
+
+        for (int i = 0; i < commentList.size(); i++) {
             View commentLayout = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.item_comment, null);
 
@@ -83,18 +85,54 @@ public class MessageAdapter extends BaseAdapter {
 //            TextView tvReplayUser = ViewHolder.get(convertView, R.id.tv_replayUser);
 //            TextView tvContent = ViewHolder.get(convertView, R.id.tv_content);
 //            TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
-//
-//            tvMasterUser.setText(item.getNickname());
-//            tvReplayUser.setText(item.getoNickname());
-//            tvContent.setText(item.getContent());
-//            tvTime.setText(mill2date(item.getTime()));
+
+            CommentModel comment = commentList.get(i);
+
+            TextView tvMasterUser = commentLayout.findViewById(R.id.tv_masterUser);
+            TextView tvReplayUser = commentLayout.findViewById(R.id.tv_replayUser);
+            TextView tvContent = commentLayout.findViewById(R.id.tv_content);
+            TextView tvTime = commentLayout.findViewById(R.id.tv_time);
+
+            tvMasterUser.setText(comment.getNickname());
+            tvReplayUser.setText(comment.getoNickname());
+            tvContent.setText(comment.getContent());
+            tvTime.setText(mill2date(comment.getTime()));
 
             ll_comment.addView(commentLayout);
+            if (isClosed) {
+                if (i == 2) {
+                    addButton(parent, position, "展开", ll_comment);
+                    break;
+                }
+            } else {
+                if (i == commentList.size() - 1) {
+                    addButton(parent, position, "收起", ll_comment);
+                }
+            }
         }
+    }
 
+    private void addButton(ViewGroup parent, int position, String defaultTxt,
+            LinearLayout ll_comment) {
         AppCompatButton button = new AppCompatButton(parent.getContext());
-        button.setText("展开");
+        button.setTag(position);
+        button.setText(defaultTxt);
         ll_comment.addView(button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int index = (int) view.getTag();
+                boolean state = dataSource.get(index).isColsed();
+                dataSource.get(index).setColsed(!state);
+                dataSource.get(index).setNickname("修改了");
+                notifyDataSetChanged();
+                if (state) {
+                    button.setText("展开");
+                } else {
+                    button.setText("收起");
+                }
+            }
+        });
     }
 
     private String mill2date(String mill) {

@@ -1,5 +1,6 @@
 package com.ywqln.yqdroid.presenter;
 
+import com.google.gson.Gson;
 import com.ywqln.yqdroid.entity.resp.InformationRespDo;
 import com.ywqln.yqdroid.entity.resp.model.CommentModel;
 
@@ -53,15 +54,24 @@ public class MessagePresenter {
 
         commentModel3.getComment_son().add(commentChild1);
         commentModel3.getComment_son().add(commentChild2);
+        commentModel3.getComment_son().add(commentChild2);
+        commentModel3.getComment_son().add(commentChild2);
 
         List<CommentModel> commentModelList = new ArrayList<>();
         commentModelList.add(commentModel1);
         commentModelList.add(commentModel2);
         commentModelList.add(commentModel3);
 
+        Gson gson = new Gson();
         for (int i = 0; i < 30; i++) {
-            commentModelList.add(commentModel2);
-            commentModelList.add(commentModel3);
+            String com2Json = gson.toJson(commentModel2);
+            String com3Json = gson.toJson(commentModel3);
+
+            CommentModel comment2 = gson.fromJson(com2Json,CommentModel.class);
+            CommentModel comment3 = gson.fromJson(com3Json,CommentModel.class);
+
+            commentModelList.add(comment2);
+            commentModelList.add(comment3);
         }
 
         for (CommentModel item : commentModelList) {
