@@ -11,5 +11,5 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="展开"
-        android:textColor="#c0c0c0"/>
+        android:textColor="#939393"/>
 </LinearLayout>

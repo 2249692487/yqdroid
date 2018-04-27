@@ -61,6 +61,8 @@ public class MessagePresenter {
         commentModel3.getComment_son().add(commentChild2);
         commentModel3.getComment_son().add(commentChild2);
         commentModel3.getComment_son().add(commentChild2);
+        commentModel3.getComment_son().add(commentChild2);
+        commentModel3.getComment_son().add(commentChild2);
 
         List<CommentModel> commentModelList = new ArrayList<>();
         commentModelList.add(commentModel1);
@@ -72,8 +74,8 @@ public class MessagePresenter {
             String com2Json = gson.toJson(commentModel2);
             String com3Json = gson.toJson(commentModel3);
 
-            CommentModel comment2 = gson.fromJson(com2Json,CommentModel.class);
-            CommentModel comment3 = gson.fromJson(com3Json,CommentModel.class);
+            CommentModel comment2 = gson.fromJson(com2Json, CommentModel.class);
+            CommentModel comment3 = gson.fromJson(com3Json, CommentModel.class);
 
             commentModelList.add(comment2);
             commentModelList.add(comment3);

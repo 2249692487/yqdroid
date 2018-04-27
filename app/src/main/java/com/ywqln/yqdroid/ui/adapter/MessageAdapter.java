@@ -135,12 +135,12 @@ public class MessageAdapter extends BaseAdapter {
             int index = (int) view.getTag();
             boolean state = dataSource.get(index).isColsed();
             dataSource.get(index).setColsed(!state);
-            dataSource.get(index).setNickname("修改了");
             notifyDataSetChanged();
+            AppCompatTextView textView = (AppCompatTextView) view;
             if (state) {
-                expandCloseText.setText("展开");
+                textView.setText("展开");
             } else {
-                expandCloseText.setText("收起");
+                textView.setText("收起");
             }
         });
     }
