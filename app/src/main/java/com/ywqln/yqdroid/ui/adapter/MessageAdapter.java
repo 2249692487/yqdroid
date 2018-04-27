@@ -101,7 +101,7 @@ public class MessageAdapter extends BaseAdapter {
             commentLayout.setTag(indexs);
             commentLayout.setOnClickListener((View view) -> {
                 int[] commentIndexs = (int[]) view.getTag();
-                new AlertDialog.Builder(commentLayout.getContext())
+                new AlertDialog.Builder(view.getContext())
                         .setTitle("回复")
                         .setMessage(
                                 "回复【" + dataSource.get(commentIndexs[0]).getNickname() + "】的说说中，["
