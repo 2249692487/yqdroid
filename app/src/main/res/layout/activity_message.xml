@@ -13,7 +13,10 @@
         android:textSize="30sp"
         android:textStyle="bold"/>
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#dadada"/>
     <ListView
         android:id="@+id/message_list"
         android:layout_width="match_parent"

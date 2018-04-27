@@ -16,6 +16,11 @@
 
     <!--图片设置圆角-->
     <declare-styleable name="RoundCornerImageView">
-        <attr name="rect_adius" format="float" />
+        <attr name="rect_adius" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension"/>
+        <attr name="border_color" format="color"/>
     </declare-styleable>
 </resources>

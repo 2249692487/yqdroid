@@ -10,8 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.Glide;
 import com.ywqln.yqdroid.R;
 import com.ywqln.yqdroid.entity.resp.model.CommentModel;
+import com.ywqln.yqdroid.util.GlideProvider;
+import com.ywqln.yqdroid.widgets.view.CircleImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +28,7 @@ import java.util.List;
  */
 public class MessageAdapter extends BaseAdapter {
     private List<CommentModel> dataSource;
+    DrawableRequestBuilder drawableRequestBuilder;
 
     public MessageAdapter(List<CommentModel> dataSource) {
         this.dataSource = dataSource;
@@ -50,17 +55,26 @@ public class MessageAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message,
                     null);
         }
+        if (drawableRequestBuilder == null) {
+            drawableRequestBuilder = Glide.with(parent.getContext())
+                    .fromString()
+                    .centerCrop()
+                    .crossFade();
+        }
 
         CommentModel comment = dataSource.get(position);
 
         TextView tvUser = ViewHolder.get(convertView, R.id.tv_user);
         TextView tvInfoContent = ViewHolder.get(convertView, R.id.tv_infoContent);
         TextView tvInfoTime = ViewHolder.get(convertView, R.id.tv_infoTime);
+        CircleImageView imgMasterHeader = ViewHolder.get(convertView, R.id.img_master_header);
         LinearLayout llComment = ViewHolder.get(convertView, R.id.ll_comment);
 
         tvUser.setText(comment.getNickname());
         tvInfoContent.setText(comment.getContent());
         tvInfoTime.setText(mill2date(comment.getTime()));
+        GlideProvider.loadWithWifi(drawableRequestBuilder, imgMasterHeader, comment.getAvatar(),
+                R.mipmap.app_icon, R.mipmap.app_icon);
 
         llComment.removeAllViews();
         llComment.setVisibility(View.GONE);
@@ -82,9 +96,9 @@ public class MessageAdapter extends BaseAdapter {
             View commentLayout = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.item_comment, null);
 
+            CommentModel comment = commentList.get(i);
             int[] indexs = new int[]{position, i};
             commentLayout.setTag(indexs);
-
             commentLayout.setOnClickListener((View view) -> {
                 int[] commentIndexs = (int[]) view.getTag();
                 new AlertDialog.Builder(commentLayout.getContext())
@@ -95,18 +109,18 @@ public class MessageAdapter extends BaseAdapter {
                                         commentIndexs[1]).getNickname() + "]的回复")
                         .show();
             });
-
-            CommentModel comment = commentList.get(i);
-
             TextView tvMasterUser = commentLayout.findViewById(R.id.tv_masterUser);
             TextView tvReplayUser = commentLayout.findViewById(R.id.tv_replayUser);
             TextView tvContent = commentLayout.findViewById(R.id.tv_content);
             TextView tvTime = commentLayout.findViewById(R.id.tv_time);
+            CircleImageView imgSubHeader = commentLayout.findViewById(R.id.img_sub_header);
 
             tvMasterUser.setText(comment.getNickname());
             tvReplayUser.setText(comment.getoNickname());
             tvContent.setText(comment.getContent());
             tvTime.setText(mill2date(comment.getTime()));
+            GlideProvider.loadWithWifi(drawableRequestBuilder, imgSubHeader, comment.getAvatar(),
+                    R.mipmap.app_icon, R.mipmap.app_icon);
 
             ll_comment.addView(commentLayout);
             if (isClosed) {
