@@ -1,6 +1,7 @@
 package com.ywqln.yqdroid.ui.adapter;
 
-import android.support.v7.widget.AppCompatButton;
+import android.app.AlertDialog;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,6 +82,20 @@ public class MessageAdapter extends BaseAdapter {
             View commentLayout = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.item_comment, null);
 
+            int[] indexs = new int[]{position, i};
+            commentLayout.setTag(indexs);
+
+            commentLayout.setOnClickListener((View view) -> {
+                int[] commentIndexs = (int[]) view.getTag();
+                new AlertDialog.Builder(commentLayout.getContext())
+                        .setTitle("回复")
+                        .setMessage(
+                                "回复【" + dataSource.get(commentIndexs[0]).getNickname() + "】的说说中，["
+                                        + dataSource.get(commentIndexs[0]).getComment_son().get(
+                                        commentIndexs[1]).getNickname() + "]的回复")
+                        .show();
+            });
+
             CommentModel comment = commentList.get(i);
 
             TextView tvMasterUser = commentLayout.findViewById(R.id.tv_masterUser);
@@ -96,33 +111,36 @@ public class MessageAdapter extends BaseAdapter {
             ll_comment.addView(commentLayout);
             if (isClosed) {
                 if (i == 2) {
-                    addButton(parent, position, "展开", ll_comment);
+                    addExpandHandler(parent, position, "展开", ll_comment);
                     break;
                 }
             } else {
                 if (i == commentList.size() - 1) {
-                    addButton(parent, position, "收起", ll_comment);
+                    addExpandHandler(parent, position, "收起", ll_comment);
                 }
             }
         }
     }
 
-    private void addButton(ViewGroup parent, int position, String defaultTxt,
+    private void addExpandHandler(ViewGroup parent, int position, String defaultTxt,
             LinearLayout ll_comment) {
-        AppCompatButton button = new AppCompatButton(parent.getContext());
-        button.setTag(position);
-        button.setText(defaultTxt);
-        ll_comment.addView(button);
-        button.setOnClickListener(view -> {
+        View expandLayout = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.view_expand_close, null);
+
+        AppCompatTextView expandCloseText = expandLayout.findViewById(R.id.atv_expand_close);
+        expandCloseText.setText(defaultTxt);
+        expandCloseText.setTag(position);
+        ll_comment.addView(expandLayout);
+        expandCloseText.setOnClickListener(view -> {
             int index = (int) view.getTag();
             boolean state = dataSource.get(index).isColsed();
             dataSource.get(index).setColsed(!state);
             dataSource.get(index).setNickname("修改了");
             notifyDataSetChanged();
             if (state) {
-                button.setText("展开");
+                expandCloseText.setText("展开");
             } else {
-                button.setText("收起");
+                expandCloseText.setText("收起");
             }
         });
     }
