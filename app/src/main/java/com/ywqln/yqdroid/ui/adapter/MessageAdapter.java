@@ -1,6 +1,5 @@
 package com.ywqln.yqdroid.ui.adapter;
 
-import android.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -29,8 +28,19 @@ import java.util.List;
 public class MessageAdapter extends BaseAdapter {
     private List<CommentModel> dataSource;
     DrawableRequestBuilder drawableRequestBuilder;
+    private CommentItemClickListener commentClickListener;
 
-    public MessageAdapter(List<CommentModel> dataSource) {
+    public MessageAdapter(List<CommentModel> dataSource,
+            CommentItemClickListener commentClickListener) {
+        this.dataSource = dataSource;
+        this.commentClickListener = commentClickListener;
+    }
+
+    public List<CommentModel> getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(List<CommentModel> dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -69,7 +79,14 @@ public class MessageAdapter extends BaseAdapter {
         TextView tvInfoTime = ViewHolder.get(convertView, R.id.tv_infoTime);
         CircleImageView imgMasterHeader = ViewHolder.get(convertView, R.id.img_master_header);
         LinearLayout llComment = ViewHolder.get(convertView, R.id.ll_comment);
+        LinearLayout llContent = ViewHolder.get(convertView, R.id.ll_content);
 
+        llContent.setTag(new int[]{position});
+        llContent.setOnClickListener(view -> {
+            if (commentClickListener != null) {
+                commentClickListener.commentClick(view, CommentLevel.ROOT);
+            }
+        });
         tvUser.setText(comment.getNickname());
         tvInfoContent.setText(comment.getContent());
         tvInfoTime.setText(mill2date(comment.getTime()));
@@ -100,14 +117,9 @@ public class MessageAdapter extends BaseAdapter {
             int[] indexs = new int[]{position, i};
             commentLayout.setTag(indexs);
             commentLayout.setOnClickListener((View view) -> {
-                int[] commentIndexs = (int[]) view.getTag();
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("回复")
-                        .setMessage(
-                                "回复【" + dataSource.get(commentIndexs[0]).getNickname() + "】的说说中，["
-                                        + dataSource.get(commentIndexs[0]).getComment_son().get(
-                                        commentIndexs[1]).getNickname() + "]的回复")
-                        .show();
+                if (commentClickListener != null) {
+                    commentClickListener.commentClick(view, CommentLevel.CHILD);
+                }
             });
             TextView tvMasterUser = commentLayout.findViewById(R.id.tv_masterUser);
             TextView tvReplayUser = commentLayout.findViewById(R.id.tv_replayUser);
@@ -167,5 +179,15 @@ public class MessageAdapter extends BaseAdapter {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String result = sdf.format(new Date(time));
         return result;
+    }
+
+
+    public enum CommentLevel {
+        ROOT,
+        CHILD
+    }
+
+    public interface CommentItemClickListener {
+        void commentClick(View view, CommentLevel level);
     }
 }
