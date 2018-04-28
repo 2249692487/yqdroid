@@ -1,6 +1,8 @@
 package com.ywqln.yqdroid.ui;
 
 import android.app.AlertDialog;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.ListView;
 
@@ -14,6 +16,7 @@ import com.ywqln.yqdroid.ui.adapter.MessageAdapter;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by yanwenqiang on 2018/4/23.
@@ -25,6 +28,10 @@ public class MessageActivity extends BaseActivity implements
 
     @BindView(R.id.message_list)
     ListView mMessageListView;
+    @BindView(R.id.atv_comment)
+    AppCompatEditText atvComment;
+    @BindView(R.id.abtn_comment)
+    AppCompatButton abtnComment;
 
     private MessageAdapter adapter;
     private MessagePresenter presenter;
@@ -46,6 +53,11 @@ public class MessageActivity extends BaseActivity implements
 
         adapter = new MessageAdapter(commentList, this);
         mMessageListView.setAdapter(adapter);
+    }
+
+    @OnClick(R.id.abtn_comment)
+    void commentSubmit(View view){
+        toast("提交");
     }
 
     @Override
