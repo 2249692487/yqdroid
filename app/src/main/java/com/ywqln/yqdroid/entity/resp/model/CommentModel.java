@@ -23,7 +23,7 @@ public class CommentModel {
     // 回复名字
     private String oNickname;
 
-    private boolean colsed = false;
+    private boolean colsed = true;
 
     public CommentModel() {
         comment_son = new ArrayList<>();

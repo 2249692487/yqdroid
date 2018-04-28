@@ -136,7 +136,7 @@ public class MessageAdapter extends BaseAdapter {
 
             ll_comment.addView(commentLayout);
             if (isClosed) {
-                if (i == 2) {
+                if (i == 2 && commentList.size() > 3) {
                     addExpandHandler(parent, position, "展开", ll_comment);
                     break;
                 }
@@ -176,7 +176,7 @@ public class MessageAdapter extends BaseAdapter {
             return "";
         }
         long time = Long.parseLong(mill);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String result = sdf.format(new Date(time));
         return result;
     }

@@ -16,6 +16,8 @@ public class MessagePresenter {
     public InformationRespDo getMessage() {
         String imgTY = "https://imgsa.baidu.com/zhixin/abpic/item/29752a9b033b5bb5c6db323834d3d539b700bcac.jpg";
         String imgLJ = "https://imgsa.baidu.com/zhixin/abpic/item/48151723dd54564eeeb2d651b1de9c82d0584f47.jpg";
+        String curMill = String.valueOf(System.currentTimeMillis());
+
 
         CommentModel commentModel1 = new CommentModel();
         commentModel1.setProductId("1150");
@@ -23,7 +25,7 @@ public class MessagePresenter {
         commentModel1.setNickname("微凉");
         commentModel1.setUserId("457");
         commentModel1.setContent("嘿嘿");
-        commentModel1.setTime("1520565404");
+        commentModel1.setTime(curMill);
         commentModel1.setAvatar(imgTY);
 
         CommentModel commentModel2 = new CommentModel();
@@ -32,7 +34,7 @@ public class MessagePresenter {
         commentModel2.setNickname("L");
         commentModel2.setUserId("457");
         commentModel2.setContent("嗨");
-        commentModel2.setTime("1520565404");
+        commentModel2.setTime(curMill);
         commentModel2.setAvatar(imgLJ);
 
 
@@ -42,7 +44,7 @@ public class MessagePresenter {
         commentModel3.setNickname("微凉");
         commentModel3.setUserId("457");
         commentModel3.setContent("你好");
-        commentModel3.setTime("1520565404");
+        commentModel3.setTime(curMill);
         commentModel3.setAvatar(imgTY);
 
         CommentModel commentChild1 = new CommentModel();
@@ -52,7 +54,7 @@ public class MessagePresenter {
         commentChild1.setUserId("457");
         commentChild1.setContent("你好");
         commentChild1.setoNickname("L");
-        commentChild1.setTime("1520565404");
+        commentChild1.setTime(curMill);
         commentChild1.setAvatar(imgTY);
 
         CommentModel commentChild2 = new CommentModel();
@@ -62,7 +64,7 @@ public class MessagePresenter {
         commentChild2.setUserId("359");
         commentChild2.setContent("嘻嘻");
         commentChild2.setoNickname("微凉");
-        commentChild2.setTime("1520565404");
+        commentChild2.setTime(curMill);
         commentChild2.setAvatar(imgLJ);
 
         commentModel3.getComment_son().add(commentChild2);

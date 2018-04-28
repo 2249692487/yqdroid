@@ -237,4 +237,15 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    /**
+     * 弹出键盘
+     */
+    protected void showSoftInPut(View view) {
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, 0);
+        }
+    }
 }
