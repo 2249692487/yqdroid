@@ -90,19 +90,26 @@ public class MessageActivity extends BaseActivity implements
             return;
         }
 
+        String replyUserId = StringUtil.Empty;
         if (childCommentIndex >= 0) {
             String parentCommId = adapter.getDataSource().get(rootCommentIndex).getCommId();
+            replyUserId = adapter.getDataSource().get(rootCommentIndex).getComment_son().get(
+                    childCommentIndex).getUserId();
             String replyCommId = adapter.getDataSource().get(rootCommentIndex).getComment_son().get(
                     childCommentIndex).getCommId();
-            presenter.addProductComments(productId, parentCommId, replyCommId, commentContent);
+            presenter.addProductComments(productId, parentCommId, replyCommId, replyUserId,
+                    commentContent);
             return;
         }
         if (rootCommentIndex >= 0) {
             String parentCommId = adapter.getDataSource().get(rootCommentIndex).getCommId();
-            presenter.addProductComments(productId, parentCommId, null, commentContent);
+            replyUserId = adapter.getDataSource().get(rootCommentIndex).getUserId();
+            presenter.addProductComments(productId, parentCommId, null, replyUserId,
+                    commentContent);
             return;
         }
-        presenter.addProductComments(productId, null, null, commentContent);
+        presenter.addProductComments(productId, null, null, replyUserId,
+                commentContent);
 
         /**
          * todo: 你需要在这里灵活发起网络传参数

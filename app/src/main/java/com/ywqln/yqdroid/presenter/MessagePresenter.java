@@ -3,10 +3,11 @@ package com.ywqln.yqdroid.presenter;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ywqln.yqdroid.entity.resp.InformationRespDo;
 import com.ywqln.yqdroid.entity.resp.model.CommentModel;
-import com.ywqln.yqdroid.util.StringUtil;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class MessagePresenter {
     // 模拟从数据库得到数据
     private InformationRespDo selectDataFromDataBase() {
 
-        if(commentModelList == null) {
+        if (commentModelList == null) {
             String imgTY =
                     "https://imgsa.baidu"
                             + ".com/zhixin/abpic/item/29752a9b033b5bb5c6db323834d3d539b700bcac.jpg";
@@ -58,7 +59,7 @@ public class MessagePresenter {
             commentModel1.setProductId("1150");
             commentModel1.setCommId("4");
             commentModel1.setNickname("微凉");
-            commentModel1.setUserId("457");
+            commentModel1.setUserId("222");
             commentModel1.setContent("嘿嘿");
             commentModel1.setTime(curMill);
             commentModel1.setAvatar(imgTY);
@@ -67,7 +68,7 @@ public class MessagePresenter {
             commentModel2.setProductId("1150");
             commentModel2.setCommId("5");
             commentModel2.setNickname("L");
-            commentModel2.setUserId("457");
+            commentModel2.setUserId("333");
             commentModel2.setContent("嗨");
             commentModel2.setTime(curMill);
             commentModel2.setAvatar(imgLJ);
@@ -77,7 +78,7 @@ public class MessagePresenter {
             commentModel3.setProductId("1150");
             commentModel3.setCommId("1");
             commentModel3.setNickname("微凉");
-            commentModel3.setUserId("457");
+            commentModel3.setUserId("222");
             commentModel3.setContent("你好");
             commentModel3.setTime(curMill);
             commentModel3.setAvatar(imgTY);
@@ -89,6 +90,7 @@ public class MessagePresenter {
             commentChild1.setUserId("457");
             commentChild1.setContent("你好");
             commentChild1.setoNickname("L");
+            commentChild1.setReplay_userid("333");
             commentChild1.setTime(curMill);
             commentChild1.setAvatar(imgTY);
 
@@ -99,6 +101,7 @@ public class MessagePresenter {
             commentChild2.setUserId("359");
             commentChild2.setContent("嘻嘻");
             commentChild2.setoNickname("微凉");
+            commentChild1.setReplay_userid("222");
             commentChild2.setTime(curMill);
             commentChild2.setAvatar(imgLJ);
 
@@ -143,7 +146,7 @@ public class MessagePresenter {
     }
 
 
-    public void addProductComments(String productKeyId, String parentCommId, String replyUserId,
+    public void addProductComments(String productKeyId, String parentCommId, String replyCommId,String replyUserId,
             String content) {
         if (requestCallBack != null) {
             // 模拟服务器返回数据，不做失败的情况了
@@ -157,37 +160,56 @@ public class MessagePresenter {
             comment.setTime(String.valueOf(System.currentTimeMillis()));
 
             // 评论商品（只有productKeyId）
-            if(TextUtils.isEmpty(parentCommId)){
+            if (TextUtils.isEmpty(parentCommId)) {
                 // 随便设置一个Id
                 comment.setCommId("6");
                 requestCallBack.success(comment);
                 return;
             }
-            InformationRespDo respDo = selectDataFromDataBase();
+            List<CommentModel> respList = line(selectDataFromDataBase());
             // 对商品的某条评论进行回复（productKeyId & parentCommId）
-            if(TextUtils.isEmpty(replyUserId)){
-                String oName = StringUtil.Empty;
-                for (CommentModel item : respDo.getData()){
-                    if (item.getCommId().equals(parentCommId)){
-                        oName = item.getNickname();
+            if (TextUtils.isEmpty(replyCommId)) {
+                for (CommentModel item : respList) {
+                    if (item.getUserId().equals(replyUserId)) {
+                        comment.setCommId("6");
+                        comment.setoNickname(item.getNickname());
+                        comment.setReplay_userid(item.getUserId());
                         break;
                     }
                 }
-                comment.setoNickname(oName);
                 requestCallBack.success(comment);
                 return;
             }
 
             // 对回复某条评论进行回复的内容进行回复（productKeyId & parentCommId & replyUserId）
-            String oName = StringUtil.Empty;
-            for (CommentModel item : respDo.getData()){
-                if (item.getCommId().equals(replyUserId)){
-                    oName = item.getNickname();
+            for (CommentModel item : respList) {
+                if (item.getUserId().equals(replyUserId)) {
+                    comment.setCommId("6");
+                    comment.setoNickname(item.getNickname());
+                    comment.setReplay_userid(item.getUserId());
                     break;
                 }
             }
-            comment.setoNickname(oName);
             requestCallBack.success(comment);
         }
+    }
+
+    private List<CommentModel> line(InformationRespDo value) {
+        List<CommentModel> content = value.getData();
+
+        String comJson = new Gson().toJson(content);
+        Type classType = new TypeToken<List<CommentModel>>() {
+        }.getType();
+        List<CommentModel> comment2 = new Gson().fromJson(comJson, classType);
+
+        for (CommentModel item : content) {
+            if (item.getComment_son().size() > 0) {
+                for (CommentModel subItem : item.getComment_son()) {
+                    comment2.add(subItem);
+                }
+            }
+        }
+
+        return comment2;
     }
 }
