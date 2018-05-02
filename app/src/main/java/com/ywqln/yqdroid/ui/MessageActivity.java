@@ -44,6 +44,8 @@ public class MessageActivity extends BaseActivity implements
     private int rootCommentIndex = -1;
     private int childCommentIndex = -1;
 
+    private String productId = "1150";
+
     @Override
     protected int layoutResId() {
         return R.layout.activity_message;
@@ -88,24 +90,19 @@ public class MessageActivity extends BaseActivity implements
             return;
         }
 
-        String header = "https://avatars1.githubusercontent.com/u/20415227?s=460&v=4";
-        CommentModel comment = new CommentModel();
-        comment.setProductId("1150");
-        comment.setCommId("6");
-        comment.setNickname(getCurrentUserName());
-        comment.setUserId("666");
-        comment.setContent(commentContent);
-        comment.setTime(String.valueOf(System.currentTimeMillis()));
-        comment.setAvatar(header);
-
         if (childCommentIndex >= 0) {
-            comment.setoNickname(adapter.getDataSource().get(rootCommentIndex).getComment_son().get(
-                    childCommentIndex).getNickname());
-        } else if (rootCommentIndex >= 0) {
-            comment.setoNickname(adapter.getDataSource().get(rootCommentIndex).getNickname());
+            String parentCommId = adapter.getDataSource().get(rootCommentIndex).getCommId();
+            String replyCommId = adapter.getDataSource().get(rootCommentIndex).getComment_son().get(
+                    childCommentIndex).getCommId();
+            presenter.addProductComments(productId, parentCommId, replyCommId, commentContent);
+            return;
         }
-
-        presenter.addProductComments(comment);
+        if (rootCommentIndex >= 0) {
+            String parentCommId = adapter.getDataSource().get(rootCommentIndex).getCommId();
+            presenter.addProductComments(productId, parentCommId, null, commentContent);
+            return;
+        }
+        presenter.addProductComments(productId, null, null, commentContent);
 
         /**
          * todo: 你需要在这里灵活发起网络传参数
