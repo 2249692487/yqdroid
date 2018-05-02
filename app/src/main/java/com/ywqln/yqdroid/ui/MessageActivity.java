@@ -106,6 +106,13 @@ public class MessageActivity extends BaseActivity implements
         }
 
         presenter.addProductComments(comment);
+
+        /**
+         * todo: 你需要在这里灵活发起网络传参数
+         * todo: 1.回复【张三】对【李四】的回复评论 --> 必须具备productId, rootCommentId, childCommentId
+         * todo: 2.回复【张三】对当前商品的评论 --> 必须具备productId, rootCommentId
+         * todo: 3.对当前商品评论 --> 必须具备productId（点击底部'评论'菜单按钮）
+         **/
     }
 
     @Override
@@ -146,11 +153,7 @@ public class MessageActivity extends BaseActivity implements
          * todo: 点击提交评论的时候，调用P层发出提交请求,
          * todo: 发出提交请求，需要的 产品Id是:productId; 评论Id是:rootCommentId; 子回复评论:childCommentId
          * todo: 请求回调Success方法(在本activity里)里重新请求评论数据 productDetailUIP.productComments(productId);
-         *
-         * todo: 1.回复【张三】对【李四】的回复评论 --> 必须具备productId, rootCommentId, childCommentId
-         * todo: 2.回复【张三】对当前商品的评论 --> 必须具备productId, rootCommentId
-         * todo: 3.对当前商品评论 --> 必须具备productId（点击底部'评论'菜单按钮）
-         **/
+         */
     }
 
     private String getCurrentUserName() {
