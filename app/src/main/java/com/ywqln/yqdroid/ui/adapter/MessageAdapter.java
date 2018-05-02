@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class MessageAdapter extends BaseAdapter {
     private List<CommentModel> dataSource;
-    DrawableRequestBuilder drawableRequestBuilder;
+    private DrawableRequestBuilder drawableRequestBuilder;
     private CommentItemClickListener commentClickListener;
 
     public MessageAdapter(List<CommentModel> dataSource,

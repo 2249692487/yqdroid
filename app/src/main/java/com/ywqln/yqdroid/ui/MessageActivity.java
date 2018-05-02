@@ -26,7 +26,8 @@ import butterknife.OnClick;
  * 描述:模仿
  */
 public class MessageActivity extends BaseActivity implements
-        MessageAdapter.CommentItemClickListener {
+        MessageAdapter.CommentItemClickListener,
+        MessagePresenter.NetWorkRequestCallBack {
 
     @BindView(R.id.message_list)
     ListView mMessageListView;
@@ -37,11 +38,9 @@ public class MessageActivity extends BaseActivity implements
     @BindView(R.id.rl_comment_input)
     RelativeLayout rlCommentInput;
 
-
     private MessageAdapter adapter;
     private MessagePresenter presenter;
     private boolean editing = false;
-
     private int rootCommentIndex = -1;
     private int childCommentIndex = -1;
 
@@ -52,16 +51,13 @@ public class MessageActivity extends BaseActivity implements
 
     @Override
     protected void initViews() {
-        presenter = new MessagePresenter();
+        presenter = new MessagePresenter(this);
     }
 
     @Override
     protected void initComplete() {
-        InformationRespDo informationRespDo = presenter.getMessage();
-        List<CommentModel> commentList = informationRespDo.getData();
+        presenter.getMessage();
 
-        adapter = new MessageAdapter(commentList, this);
-        mMessageListView.setAdapter(adapter);
         atvComment.setOnFocusChangeListener((view, b) -> {
             if (!b) {
                 editing = false;
@@ -105,19 +101,11 @@ public class MessageActivity extends BaseActivity implements
         if (childCommentIndex >= 0) {
             comment.setoNickname(adapter.getDataSource().get(rootCommentIndex).getComment_son().get(
                     childCommentIndex).getNickname());
-            adapter.getDataSource().get(rootCommentIndex).getComment_son().add(comment);
         } else if (rootCommentIndex >= 0) {
             comment.setoNickname(adapter.getDataSource().get(rootCommentIndex).getNickname());
-            adapter.getDataSource().get(rootCommentIndex).getComment_son().add(comment);
-        } else {
-            adapter.getDataSource().add(0, comment);
         }
 
-        adapter.notifyDataSetChanged();
-        atvComment.clearFocus();
-        hideSoftInPut(atvComment);
-        rootCommentIndex = -1;
-        childCommentIndex = -1;
+        presenter.addProductComments(comment);
     }
 
     @Override
@@ -167,5 +155,34 @@ public class MessageActivity extends BaseActivity implements
 
     private String getCurrentUserName() {
         return "燕文强";
+    }
+
+    @Override
+    public void success(CommentModel data) {
+        if (childCommentIndex >= 0) {
+            adapter.getDataSource().get(rootCommentIndex).getComment_son().add(0, data);
+        } else if (rootCommentIndex >= 0) {
+            adapter.getDataSource().get(rootCommentIndex).getComment_son().add(0, data);
+        } else {
+            adapter.getDataSource().add(0, data);
+        }
+
+        adapter.notifyDataSetChanged();
+        atvComment.clearFocus();
+        hideSoftInPut(atvComment);
+        rootCommentIndex = -1;
+        childCommentIndex = -1;
+    }
+
+    @Override
+    public void getList(InformationRespDo data) {
+        List<CommentModel> commentList = data.getData();
+        if (adapter == null) {
+            adapter = new MessageAdapter(commentList, this);
+            mMessageListView.setAdapter(adapter);
+        } else {
+            adapter.setDataSource(commentList);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

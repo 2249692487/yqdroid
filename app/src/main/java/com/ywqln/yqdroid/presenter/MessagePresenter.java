@@ -13,9 +13,35 @@ import java.util.List;
  * 描述:待描述
  */
 public class MessagePresenter {
-    public InformationRespDo getMessage() {
-        String imgTY = "https://imgsa.baidu.com/zhixin/abpic/item/29752a9b033b5bb5c6db323834d3d539b700bcac.jpg";
-        String imgLJ = "https://imgsa.baidu.com/zhixin/abpic/item/48151723dd54564eeeb2d651b1de9c82d0584f47.jpg";
+    public MessagePresenter(NetWorkRequestCallBack requestCallBack) {
+        this.requestCallBack = requestCallBack;
+    }
+
+    private NetWorkRequestCallBack requestCallBack;
+
+    public NetWorkRequestCallBack getRequestCallBack() {
+        return requestCallBack;
+    }
+
+    public void setRequestCallBack(NetWorkRequestCallBack requestCallBack) {
+        this.requestCallBack = requestCallBack;
+    }
+
+    // 模拟网络请求
+    public void addProductComments(CommentModel comment) {
+        if (requestCallBack != null) {
+            // 模拟服务器返回数据，不做失败的情况了
+            requestCallBack.success(comment);
+        }
+    }
+
+    public void getMessage() {
+        String imgTY =
+                "https://imgsa.baidu"
+                        + ".com/zhixin/abpic/item/29752a9b033b5bb5c6db323834d3d539b700bcac.jpg";
+        String imgLJ =
+                "https://imgsa.baidu"
+                        + ".com/zhixin/abpic/item/48151723dd54564eeeb2d651b1de9c82d0584f47.jpg";
         String curMill = String.valueOf(System.currentTimeMillis());
 
 
@@ -99,6 +125,15 @@ public class MessagePresenter {
 
         InformationRespDo respDo = new InformationRespDo(commentModelList);
 
-        return respDo;
+        if (requestCallBack != null) {
+            // 模拟服务器返回数据，不做失败的情况了
+            requestCallBack.getList(respDo);
+        }
+    }
+
+    public interface NetWorkRequestCallBack {
+        void success(CommentModel data);
+
+        void getList(InformationRespDo data);
     }
 }
