@@ -1,6 +1,9 @@
 package com.ywqln.yqdroid.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -72,6 +75,14 @@ public class LoginActivity extends BaseActivity {
         mTvVersionCode.setText(BuildConfig.VERSION_NAME);
         mIvPasswordShow.setOnClickListener(view -> passwordVisibleClick());
         mBtnLogin.setOnClickListener(view -> loginClick());
+
+        String ID = Settings.Secure.getString(getContentResolver(),
+                android.provider.Settings.Secure.ANDROID_ID);
+
+        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String deviceId = tm.getDeviceId();
+
+        int stop = 0;
     }
 
     /**
@@ -97,9 +108,13 @@ public class LoginActivity extends BaseActivity {
         String deviceId = AppUtil.getDevicesId(LoginActivity.this);
         Log.d("deviceId", "devicesId：" + deviceId);
 
+        String androidId = AppUtil.getAndroidId(LoginActivity.this);
+        Log.d("androidId", "androidId：" + androidId);
+
         if (true) {
+
             Intent intent = new Intent(this, MessageActivity.class);
-            startActivity(intent);
+//            startActivity(intent);
             return;
         }
 

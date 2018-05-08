@@ -3,6 +3,7 @@ package com.ywqln.yqdroid.util;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
@@ -34,5 +35,12 @@ public class AppUtil {
             return com.ywqln.yqdroid.util.StringUtil.Empty;
         }
         return tm.getDeviceId();
+    }
+
+    public static String getAndroidId(Context context) {
+        String androidId = Settings.Secure.getString(context.getContentResolver(),
+                android.provider.Settings.Secure.ANDROID_ID);
+
+        return androidId;
     }
 }
