@@ -114,7 +114,7 @@ public class LoginActivity extends BaseActivity {
         if (true) {
 
             Intent intent = new Intent(this, MessageActivity.class);
-//            startActivity(intent);
+            startActivity(intent);
             return;
         }
 
