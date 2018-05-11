@@ -3,7 +3,9 @@ package com.ywqln.yqdroid.ui;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -45,6 +47,7 @@ public class MessageActivity extends BaseActivity implements
     private int childCommentIndex = -1;
 
     private String productId = "1150";
+    float inputLayoutY = 0;
 
     @Override
     protected int layoutResId() {
@@ -55,6 +58,7 @@ public class MessageActivity extends BaseActivity implements
     protected void initViews() {
         presenter = new MessagePresenter(this);
     }
+
 
     @Override
     protected void initComplete() {
@@ -80,7 +84,24 @@ public class MessageActivity extends BaseActivity implements
             hideSoftInPut(atvComment);
             return false;
         });
+
+
+        inputLayoutY = rlCommentInput.getY();
+        rlCommentInput.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        float positionY = rlCommentInput.getY();
+                        if (positionY < inputLayoutY) {
+                            Log.d("yanwenqiang","键盘弹出了");
+                        }else {
+                            Log.d("yanwenqiang","键盘收起了");
+                        }
+                    }
+                });
+
     }
+
 
     @OnClick(R.id.abtn_comment)
     void commentSubmit(View view) {
