@@ -112,11 +112,16 @@ public class LoginActivity extends BaseActivity {
         Log.d("androidId", "androidId：" + androidId);
 
         if (true) {
-
-            Intent intent = new Intent(this, MessageActivity.class);
+            Intent intent = new Intent(this, MarvelRoleActivity.class);
             startActivity(intent);
             return;
         }
+
+//        if (true) {
+//            Intent intent = new Intent(this, MessageActivity.class);
+//            startActivity(intent);
+//            return;
+//        }
 
 //        if (true) {
 //            Intent intent = new Intent(this, BackForegroundActivity.class);
