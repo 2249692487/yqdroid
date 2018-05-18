@@ -1,9 +1,8 @@
 package com.ywqln.yqdroid.ui;
 
-import android.content.Context;
 import android.content.Intent;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,6 +25,7 @@ import com.ywqln.yqdroid.rxjava.ApiException;
 import com.ywqln.yqdroid.rxjava.ResponseObserver;
 import com.ywqln.yqdroid.util.AppUtil;
 import com.ywqln.yqdroid.util.MD5Util;
+import com.ywqln.yqdroid.util.RenderScriptGaussianBlur;
 import com.ywqln.yqdroid.util.SprfUtil;
 import com.ywqln.yqdroid.util.StringUtil;
 
@@ -50,6 +50,9 @@ public class LoginActivity extends BaseActivity {
     ImageView mIvPasswordShow;
     @BindView(R.id.tv_version_code)
     TextView mTvVersionCode;
+
+    @BindView(R.id.logo)
+    ImageView logo;
 
     /**
      * 密码输入状态初始值
@@ -76,13 +79,9 @@ public class LoginActivity extends BaseActivity {
         mIvPasswordShow.setOnClickListener(view -> passwordVisibleClick());
         mBtnLogin.setOnClickListener(view -> loginClick());
 
-        String ID = Settings.Secure.getString(getContentResolver(),
-                android.provider.Settings.Secure.ANDROID_ID);
-
-        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String deviceId = tm.getDeviceId();
-
-        int stop = 0;
+        RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(this);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sqnx);
+        logo.setImageBitmap(blur.gaussianBlur(90, bitmap));
     }
 
     /**
