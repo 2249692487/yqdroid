@@ -3,6 +3,7 @@ package com.ywqln.yqdroid.ui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ywqln.yqdroid.BuildConfig;
@@ -25,12 +27,12 @@ import com.ywqln.yqdroid.rxjava.ApiException;
 import com.ywqln.yqdroid.rxjava.ResponseObserver;
 import com.ywqln.yqdroid.util.AppUtil;
 import com.ywqln.yqdroid.util.MD5Util;
-import com.ywqln.yqdroid.util.RenderScriptGaussianBlur;
 import com.ywqln.yqdroid.util.SprfUtil;
 import com.ywqln.yqdroid.util.StringUtil;
 
 import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
+import jp.wasabeef.blurry.Blurry;
 
 /**
  * 描述:登录界面
@@ -53,6 +55,9 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.logo)
     ImageView logo;
+
+    @BindView(R.id.ll_collection_logo)
+    RelativeLayout collectionLogo;
 
     /**
      * 密码输入状态初始值
@@ -79,9 +84,25 @@ public class LoginActivity extends BaseActivity {
         mIvPasswordShow.setOnClickListener(view -> passwordVisibleClick());
         mBtnLogin.setOnClickListener(view -> loginClick());
 
-        RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(this);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sqnx);
-        logo.setImageBitmap(blur.gaussianBlur(90, bitmap));
+//        RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(this);
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable
+// .face_collection_fail);
+//        logo.setImageBitmap(blur.gaussianBlur(25, bitmap));
+
+//        Blurry.with(this).radius(25).sampling(2).onto(collectionLogo);
+//        Blurry.with(this).capture(collectionLogo).into(logo);
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                R.drawable.sqnx);
+
+
+        Blurry.with(this)
+                .radius(10)
+                .sampling(20)
+                .color(Color.argb(66, 255, 255, 255))
+                .from(bitmap)
+                .into(logo);
+
     }
 
     /**
@@ -110,17 +131,17 @@ public class LoginActivity extends BaseActivity {
         String androidId = AppUtil.getAndroidId(LoginActivity.this);
         Log.d("androidId", "androidId：" + androidId);
 
-        if (true) {
-            Intent intent = new Intent(this, MarvelRoleActivity.class);
-            startActivity(intent);
-            return;
-        }
-
 //        if (true) {
-//            Intent intent = new Intent(this, MessageActivity.class);
+//            Intent intent = new Intent(this, MarvelRoleActivity.class);
 //            startActivity(intent);
 //            return;
 //        }
+
+        if (true) {
+            Intent intent = new Intent(this, MessageActivity.class);
+            startActivity(intent);
+            return;
+        }
 
 //        if (true) {
 //            Intent intent = new Intent(this, BackForegroundActivity.class);
