@@ -202,6 +202,8 @@ public class MessagePresenter {
         }.getType();
         List<CommentModel> comment2 = new Gson().fromJson(comJson, classType);
 
+        String couponArr = new Gson().toJson(comment2);
+
         for (CommentModel item : content) {
             if (item.getComment_son().size() > 0) {
                 for (CommentModel subItem : item.getComment_son()) {
