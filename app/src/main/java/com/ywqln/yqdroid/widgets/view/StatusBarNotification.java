@@ -11,6 +11,9 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 描述:顶部通知.
  * <p>
@@ -20,10 +23,13 @@ import android.widget.TextView;
  */
 public class StatusBarNotification implements NotificationInterface {
     private Builder mBuilder;
-    private LinearLayout mContainer;
-    private TextView mMessageTextView;
+//    private LinearLayout mContainer;
+//    private TextView mMessageTextView;
+
+    private List<LinearLayout> mContainerList;
 
     protected StatusBarNotification(Activity activity) {
+        mContainerList = new ArrayList<>();
         mBuilder = new Builder(activity);
     }
 
@@ -60,8 +66,9 @@ public class StatusBarNotification implements NotificationInterface {
     }
 
     public void show() {
+        gone();
         // window级别，自上而下出来
-        mContainer = new LinearLayout(mBuilder.mActivity);
+        LinearLayout container = new LinearLayout(mBuilder.mActivity);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -73,8 +80,8 @@ public class StatusBarNotification implements NotificationInterface {
         // type 设置 Window 类别（层级）
         layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         layoutParams.gravity = Gravity.TOP;
-        mContainer.setGravity(Gravity.CENTER);
-        mBuilder.mActivity.getWindow().addContentView(mContainer, layoutParams);
+        container.setGravity(Gravity.CENTER);
+        mBuilder.mActivity.getWindow().addContentView(container, layoutParams);
 
 
         WindowManager.LayoutParams textViewParam = new WindowManager.LayoutParams(
@@ -83,63 +90,107 @@ public class StatusBarNotification implements NotificationInterface {
                 0, 0,
                 PixelFormat.TRANSPARENT
         );
-        mMessageTextView = new TextView(mBuilder.mActivity);
-        mMessageTextView.setBackgroundColor(mBuilder.bgColor);
-        mMessageTextView.setTextColor(mBuilder.textColor);
-        mMessageTextView.setGravity(Gravity.CENTER);
-        mMessageTextView.setTextSize(mBuilder.textSize);
-        mMessageTextView.setPadding(0, mBuilder.verticalMargin, 0, mBuilder.verticalMargin);
-        mMessageTextView.setText(mBuilder.getMessage());
-        mContainer.addView(mMessageTextView, textViewParam);
+        TextView messageTextView = new TextView(mBuilder.mActivity);
+        messageTextView.setTag("msgView");
+        messageTextView.setBackgroundColor(mBuilder.bgColor);
+        messageTextView.setTextColor(mBuilder.textColor);
+        messageTextView.setGravity(Gravity.CENTER);
+        messageTextView.setTextSize(mBuilder.textSize);
+        messageTextView.setPadding(0, mBuilder.verticalMargin, 0, mBuilder.verticalMargin);
+        messageTextView.setText(mBuilder.getMessage());
+        container.addView(messageTextView, textViewParam);
         // 从上而下的动画
         TranslateAnimation animation = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f
         );
         animation.setDuration(mBuilder.animationDuration);
-        mMessageTextView.startAnimation(animation);
+        messageTextView.startAnimation(animation);
 
-        mContainer.postDelayed(new Runnable() {
+        mContainerList.add(container);
+
+        container.setTag(true);
+        container.postDelayed(new Runnable() {
             @Override
             public void run() {
-                dismiss();
+                TranslateAnimation animation = new TranslateAnimation(
+                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
+                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
+                );
+                animation.setDuration(mBuilder.animationDuration);
+                messageTextView.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        container.setTag(false);
+                        container.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
             }
         }, mBuilder.displayDelayed);
     }
 
     @Override
     public void dismiss() {
-        TranslateAnimation animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
-        );
-        animation.setDuration(mBuilder.animationDuration);
-        mMessageTextView.startAnimation(animation);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
 
+        int count = mContainerList.size();
+        for (int i = 0; i < count; i++) {
+            LinearLayout container = mContainerList.get(i);
+            boolean isShow = (boolean) container.getTag();
+            if (isShow) {
+                TranslateAnimation animation = new TranslateAnimation(
+                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
+                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
+                );
+                TextView messageTextView = container.findViewWithTag("msgView");
+                animation.setDuration(mBuilder.animationDuration);
+                messageTextView.startAnimation(animation);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        container.setVisibility(View.GONE);
+                        container.setTag(false);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
             }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mContainer.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+        }
     }
 
     @Override
     public void gone() {
-        mContainer.setVisibility(View.GONE);
+        int count = mContainerList.size();
+        for (int i = 0; i < count; i++) {
+            LinearLayout container = mContainerList.get(i);
+            boolean isShow = (boolean) container.getTag();
+            if (isShow) {
+                container.setVisibility(View.GONE);
+            }
+        }
     }
 
     public static class Builder {
         private Activity mActivity;
+        private StatusBarNotification mNotification;
 
         private String message = "";
         private float textSize = 12;
@@ -153,11 +204,22 @@ public class StatusBarNotification implements NotificationInterface {
             this.mActivity = activity;
         }
 
+        public StatusBarNotification build() {
+            if (mNotification == null) {
+                mNotification = new StatusBarNotification(mActivity);
+                mNotification.setBuilder(this);
+            }
+            return mNotification;
+        }
+
         public StatusBarNotification show() {
-            StatusBarNotification notification = new StatusBarNotification(mActivity);
-            notification.setBuilder(this);
-            notification.show();
-            return notification;
+            if (mNotification == null) {
+                mNotification = new StatusBarNotification(mActivity);
+                mNotification.setBuilder(this);
+            }
+            mNotification.gone();
+            mNotification.show();
+            return mNotification;
         }
 
         public String getMessage() {

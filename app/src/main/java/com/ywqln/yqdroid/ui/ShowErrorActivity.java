@@ -21,8 +21,7 @@ public class ShowErrorActivity extends BaseActivity {
     @BindView(R.id.clickButton)
     public Button clickButton;
 
-    private StatusBarNotification.Builder mBuilder;
-    private StatusBarNotification mStatusBarNotification;
+    private StatusBarNotification mNotification;
 
     @Override
     protected int layoutResId() {
@@ -31,12 +30,12 @@ public class ShowErrorActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        mStatusBarNotification = new StatusBarNotification.Builder(this)
-                .setMessage("当前网络状态不佳，可下拉刷新尝试")
-                .setTextColor(Color.BLUE)
-                .setBgColor(Color.argb(120, 0, 255, 0))
-                .setDisplayDelayed(2000)
-                .show();
+        mNotification = new StatusBarNotification.Builder(this)
+//                .setMessage("当前网络状态不佳，可下拉刷新尝试")
+                .setMessage("莉娜，我爱你")
+                .setTextColor(Color.WHITE)
+                .setBgColor(Color.argb(180, 0, 0, 255))
+                .setDisplayDelayed(2000).build();
     }
 
     @Override
@@ -46,20 +45,40 @@ public class ShowErrorActivity extends BaseActivity {
         });
     }
 
+    int count = 0;
+
     private void btn_click() {
 
 //        new StatusBarNotification.Builder(this)
-//                .setMessage("当前网络状态不佳，可下拉刷新尝试")
+////                .setMessage("当前网络状态不佳，可下拉刷新尝试")
+//                .setMessage("莉娜，我爱你")
 //                .setTextColor(Color.BLUE)
-//                .setBgColor(Color.argb(120, 0, 255, 0))
+//                .setBgColor(Color.argb(180, 255, 0, 0))
 //                .setDisplayDelayed(2000)
 //                .show();
-//
 
-        mStatusBarNotification.setTextColor(Color.RED);
-        mStatusBarNotification.setDisplayDelayed(3000);
-        mStatusBarNotification.setVerticalMargin(20);
-        mStatusBarNotification.show();
+        count = 0;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    count++;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mNotification.setMessage("你好，莉娜" + count);
+                            mNotification.show();
+                        }
+                    });
+                }
+            }
+        }).start();
 
     }
 }
