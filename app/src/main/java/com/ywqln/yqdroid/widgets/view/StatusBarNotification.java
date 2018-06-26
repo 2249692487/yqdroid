@@ -102,29 +102,7 @@ public class StatusBarNotification implements NotificationInterface {
         mContainer.postDelayed(new Runnable() {
             @Override
             public void run() {
-                // 从下而上的动画
-                TranslateAnimation animation = new TranslateAnimation(
-                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
-                );
-                animation.setDuration(200);
-                mMessageTextView.startAnimation(animation);
-                animation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        mContainer.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
+                dismiss();
             }
         }, mBuilder.displayDelayed);
     }
@@ -135,7 +113,7 @@ public class StatusBarNotification implements NotificationInterface {
                 Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
         );
-        animation.setDuration(200);
+        animation.setDuration(mBuilder.animationDuration);
         mMessageTextView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
