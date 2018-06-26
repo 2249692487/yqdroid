@@ -5,6 +5,13 @@
                 android:layout_height="match_parent"
                 android:background="@color/white">
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/face_collection_fail"/>
+
     <RelativeLayout
         android:id="@+id/ll_collection_logo"
         android:layout_width="match_parent"
@@ -20,13 +27,6 @@
             android:text="@string/loginTxt"
             android:textSize="35sp"/>
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/face_collection_fail"/>
     </RelativeLayout>
 
     <RelativeLayout

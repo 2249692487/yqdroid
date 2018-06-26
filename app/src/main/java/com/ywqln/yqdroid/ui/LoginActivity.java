@@ -30,6 +30,11 @@ import com.ywqln.yqdroid.util.MD5Util;
 import com.ywqln.yqdroid.util.SprfUtil;
 import com.ywqln.yqdroid.util.StringUtil;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 import butterknife.BindView;
 import io.reactivex.disposables.Disposable;
 import jp.wasabeef.blurry.Blurry;
@@ -84,25 +89,56 @@ public class LoginActivity extends BaseActivity {
         mIvPasswordShow.setOnClickListener(view -> passwordVisibleClick());
         mBtnLogin.setOnClickListener(view -> loginClick());
 
-//        RenderScriptGaussianBlur blur = new RenderScriptGaussianBlur(this);
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable
-// .face_collection_fail);
-//        logo.setImageBitmap(blur.gaussianBlur(25, bitmap));
-
-//        Blurry.with(this).radius(25).sampling(2).onto(collectionLogo);
-//        Blurry.with(this).capture(collectionLogo).into(logo);
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
-                R.drawable.sqnx);
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+//                R.drawable.sqnx);
+//        Blurry.with(this)
+//                .radius(10)
+//                .sampling(20)
+//                .color(Color.argb(66, 255, 255, 255))
+//                .from(bitmap)
+//                .into(logo);
 
 
-        Blurry.with(this)
-                .radius(10)
-                .sampling(20)
-                .color(Color.argb(66, 255, 255, 255))
-                .from(bitmap)
-                .into(logo);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap5 = getBitMBitmap(
+                        "http://thirdwx.qlogo"
+                                + ".cn/mmopen/vi_32/DYAIOgq83eqW5uArXTCfB9QticvrqriaoPOOZbG7edwS18shArAntdpNNs9E9ZdkibJJ12cPLT7QaUM2AVXZibakHQ/132");
 
+
+                logo.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Blurry.with(LoginActivity.this)
+                                .radius(2)
+                                .sampling(2)
+                                .color(Color.argb(66, 255, 255, 255))
+                                .from(bitmap5)
+                                .into(logo);
+                    }
+                });
+            }
+        }).start();
+    }
+
+
+    public static Bitmap getBitMBitmap(String urlpath) {
+        Bitmap map = null;
+        try {
+            URL url = new URL(urlpath);
+            URLConnection conn = url.openConnection();
+            conn.connect();
+            InputStream in;
+            in = conn.getInputStream();
+            map = BitmapFactory.decodeStream(in);
+            in.close();
+            Log.e("qln", "map: " + map);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return map;
     }
 
     /**
@@ -138,10 +174,16 @@ public class LoginActivity extends BaseActivity {
 //        }
 
         if (true) {
-            Intent intent = new Intent(this, MessageActivity.class);
+            Intent intent = new Intent(this, ShowErrorActivity.class);
             startActivity(intent);
             return;
         }
+
+//        if (true) {
+//            Intent intent = new Intent(this, MessageActivity.class);
+//            startActivity(intent);
+//            return;
+//        }
 
 //        if (true) {
 //            Intent intent = new Intent(this, BackForegroundActivity.class);
