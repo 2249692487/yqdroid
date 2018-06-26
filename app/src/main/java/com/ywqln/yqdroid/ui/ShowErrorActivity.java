@@ -37,8 +37,6 @@ public class ShowErrorActivity extends BaseActivity {
                 .setBgColor(Color.argb(120, 0, 255, 0))
                 .setDisplayDelayed(2000)
                 .show();
-
-        mStatusBarNotification.gone();
     }
 
     @Override
