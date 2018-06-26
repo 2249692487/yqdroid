@@ -18,8 +18,10 @@ import android.widget.TextView;
  * @author yanwenqiang.
  * @date 2018/6/26
  */
-public class StatusBarNotification implements StatusBarNotification.NotificationInterface {
+public class StatusBarNotification implements NotificationInterface {
     private Builder mBuilder;
+    private LinearLayout mContainer;
+    private TextView mMessageTextView;
 
     protected StatusBarNotification(Activity activity) {
         mBuilder = new Builder(activity);
@@ -59,7 +61,7 @@ public class StatusBarNotification implements StatusBarNotification.Notification
 
     public void show() {
         // window级别，自上而下出来
-        LinearLayout layout = new LinearLayout(mBuilder.mActivity);
+        mContainer = new LinearLayout(mBuilder.mActivity);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -71,8 +73,8 @@ public class StatusBarNotification implements StatusBarNotification.Notification
         // type 设置 Window 类别（层级）
         layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         layoutParams.gravity = Gravity.TOP;
-        layout.setGravity(Gravity.CENTER);
-        mBuilder.mActivity.getWindow().addContentView(layout, layoutParams);
+        mContainer.setGravity(Gravity.CENTER);
+        mBuilder.mActivity.getWindow().addContentView(mContainer, layoutParams);
 
 
         WindowManager.LayoutParams textViewParam = new WindowManager.LayoutParams(
@@ -81,23 +83,23 @@ public class StatusBarNotification implements StatusBarNotification.Notification
                 0, 0,
                 PixelFormat.TRANSPARENT
         );
-        TextView textView = new TextView(mBuilder.mActivity);
-        textView.setBackgroundColor(mBuilder.bgColor);
-        textView.setTextColor(mBuilder.textColor);
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(mBuilder.textSize);
-        textView.setPadding(0, mBuilder.verticalMargin, 0, mBuilder.verticalMargin);
-        textView.setText(mBuilder.getMessage());
-        layout.addView(textView, textViewParam);
+        mMessageTextView = new TextView(mBuilder.mActivity);
+        mMessageTextView.setBackgroundColor(mBuilder.bgColor);
+        mMessageTextView.setTextColor(mBuilder.textColor);
+        mMessageTextView.setGravity(Gravity.CENTER);
+        mMessageTextView.setTextSize(mBuilder.textSize);
+        mMessageTextView.setPadding(0, mBuilder.verticalMargin, 0, mBuilder.verticalMargin);
+        mMessageTextView.setText(mBuilder.getMessage());
+        mContainer.addView(mMessageTextView, textViewParam);
         // 从上而下的动画
         TranslateAnimation animation = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f
         );
         animation.setDuration(mBuilder.animationDuration);
-        textView.startAnimation(animation);
+        mMessageTextView.startAnimation(animation);
 
-        layout.postDelayed(new Runnable() {
+        mContainer.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // 从下而上的动画
@@ -106,7 +108,7 @@ public class StatusBarNotification implements StatusBarNotification.Notification
                         Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
                 );
                 animation.setDuration(200);
-                textView.startAnimation(animation);
+                mMessageTextView.startAnimation(animation);
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -115,7 +117,7 @@ public class StatusBarNotification implements StatusBarNotification.Notification
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        layout.setVisibility(View.GONE);
+                        mContainer.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -129,7 +131,33 @@ public class StatusBarNotification implements StatusBarNotification.Notification
 
     @Override
     public void dismiss() {
+        TranslateAnimation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
+        );
+        animation.setDuration(200);
+        mMessageTextView.startAnimation(animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
 
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mContainer.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+    @Override
+    public void gone() {
+        mContainer.setVisibility(View.GONE);
     }
 
     public static class Builder {
@@ -216,9 +244,5 @@ public class StatusBarNotification implements StatusBarNotification.Notification
             this.verticalMargin = verticalMargin;
             return this;
         }
-    }
-
-    public interface NotificationInterface {
-        void dismiss();
     }
 }
