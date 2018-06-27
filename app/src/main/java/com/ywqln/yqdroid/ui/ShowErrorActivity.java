@@ -1,5 +1,6 @@
 package com.ywqln.yqdroid.ui;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.widget.Button;
 
@@ -48,6 +49,10 @@ public class ShowErrorActivity extends BaseActivity {
     private void btn_click() {
         mNotification.setMessage("当前网络状态不佳，可下拉刷新尝试");
         mNotification.show();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.create();
+
 
         // 方式2
 //        new StatusBarNotification.Builder(this)

@@ -29,6 +29,7 @@ import com.ywqln.yqdroid.util.AppUtil;
 import com.ywqln.yqdroid.util.MD5Util;
 import com.ywqln.yqdroid.util.SprfUtil;
 import com.ywqln.yqdroid.util.StringUtil;
+import com.ywqln.yqdroid.widgets.view.StatusBarNotification;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -79,7 +80,6 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
     }
 
     @Override
@@ -123,7 +123,7 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    public static Bitmap getBitMBitmap(String urlpath) {
+    public Bitmap getBitMBitmap(String urlpath) {
         Bitmap map = null;
         try {
             URL url = new URL(urlpath);
@@ -136,6 +136,17 @@ public class LoginActivity extends BaseActivity {
             Log.e("qln", "map: " + map);
         } catch (Exception e) {
             e.printStackTrace();
+            StatusBarNotification notification = new StatusBarNotification.Builder(this)
+                    .setMessage("网络状态不给力，加载图片失败")
+                    .setTextColor(Color.WHITE)
+                    .setBgColor(Color.argb(180, 255, 0, 0))
+                    .setDisplayDelayed(2000).build();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    notification.show();
+                }
+            });
         }
 
         return map;
