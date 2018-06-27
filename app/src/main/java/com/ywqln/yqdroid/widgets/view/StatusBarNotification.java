@@ -32,11 +32,11 @@ public class StatusBarNotification implements NotificationInterface {
     }
 
     public void setMessage(String message) {
-        mBuilder.message = message;
+        mBuilder.setMessage(message);
     }
 
     public void setTextSize(float textSize) {
-        mBuilder.textSize = textSize;
+        mBuilder.setTextSize(textSize);
     }
 
     public void setTextColor(int color) {
@@ -48,15 +48,15 @@ public class StatusBarNotification implements NotificationInterface {
     }
 
     public void setDisplayDelayed(long displayDelayed) {
-        mBuilder.displayDelayed = displayDelayed;
+        mBuilder.setDisplayDelayed(displayDelayed);
     }
 
     public void setAnimationDuration(long animationDuration) {
-        mBuilder.animationDuration = animationDuration;
+        mBuilder.setAnimationDuration(animationDuration);
     }
 
     public void setVerticalMargin(int verticalMargin) {
-        mBuilder.verticalMargin = verticalMargin;
+        mBuilder.setVerticalMargin(verticalMargin);
     }
 
     public void show() {
@@ -194,10 +194,7 @@ public class StatusBarNotification implements NotificationInterface {
         }
 
         public StatusBarNotification show() {
-            if (mNotification == null) {
-                mNotification = new StatusBarNotification(mActivity);
-                mNotification.setBuilder(this);
-            }
+            build();
             mNotification.show();
             return mNotification;
         }

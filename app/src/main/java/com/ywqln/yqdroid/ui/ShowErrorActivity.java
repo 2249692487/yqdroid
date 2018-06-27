@@ -30,6 +30,7 @@ public class ShowErrorActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        // 方式1
         mNotification = new StatusBarNotification.Builder(this)
                 .setMessage("这是提示消息")
                 .setTextColor(Color.WHITE)
@@ -46,40 +47,16 @@ public class ShowErrorActivity extends BaseActivity {
         });
     }
 
-    int count = 0;
-
     private void btn_click() {
         mNotification.setMessage("当前网络状态不佳，可下拉刷新尝试");
         mNotification.show();
 
-//        new StatusBarNotification.Builder(this)
-//                .setMessage("当前网络状态不佳，可下拉刷新尝试")
-//                .setTextColor(Color.WHITE)
-//                .setBgColor(Color.argb(180, 0, 255, 0))
-//                .setDisplayDelayed(2000).show();
-
-//        count = 0;
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                for (int i = 0; i < 10; i++) {
-//                    try {
-//                        Thread.sleep(200);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    count++;
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mNotification.setMessage("这是提示消息" + count);
-//                            mNotification.show();
-//                        }
-//                    });
-//                }
-//            }
-//        }).start();
+        // 方式2
+        new StatusBarNotification.Builder(this)
+                .setMessage("当前网络状态不佳，可下拉刷新尝试")
+                .setTextColor(Color.WHITE)
+                .setBgColor(Color.argb(180, 0, 255, 0))
+                .setDisplayDelayed(2000).show();
 
     }
 }
