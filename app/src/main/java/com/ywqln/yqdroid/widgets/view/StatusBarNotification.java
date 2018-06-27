@@ -11,9 +11,6 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 描述:顶部通知.
  * <p>
@@ -23,11 +20,10 @@ import java.util.List;
  */
 public class StatusBarNotification implements NotificationInterface {
     private Builder mBuilder;
-    private List<LinearLayout> mContainerList;
-    private static String IDENTITY ="msgView";
+    private LinearLayout mContainer;
+    private long startTime = System.currentTimeMillis();
 
     protected StatusBarNotification(Activity activity) {
-        mContainerList = new ArrayList<>();
         mBuilder = new Builder(activity);
     }
 
@@ -64,9 +60,51 @@ public class StatusBarNotification implements NotificationInterface {
     }
 
     public void show() {
+        startTime = System.currentTimeMillis();
+        addContainer();
         gone();
-        // window级别，自上而下出来
-        LinearLayout container = new LinearLayout(mBuilder.mActivity);
+        mContainer.setVisibility(View.VISIBLE);
+        mContainer.setTag(true);
+
+
+        WindowManager.LayoutParams textViewParam = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                0, 0,
+                PixelFormat.TRANSPARENT
+        );
+        TextView messageTextView = new TextView(mBuilder.mActivity);
+        messageTextView.setBackgroundColor(mBuilder.bgColor);
+        messageTextView.setTextColor(mBuilder.textColor);
+        messageTextView.setGravity(Gravity.CENTER);
+        messageTextView.setTextSize(mBuilder.textSize);
+        messageTextView.setPadding(0, mBuilder.verticalMargin, 0, mBuilder.verticalMargin);
+        messageTextView.setText(mBuilder.getMessage());
+        mContainer.addView(messageTextView, textViewParam);
+        // 从上而下的动画
+        TranslateAnimation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f
+        );
+        animation.setDuration(mBuilder.animationDuration);
+        messageTextView.startAnimation(animation);
+
+        mContainer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                long duration = System.currentTimeMillis() - startTime;
+                if (duration >= mBuilder.displayDelayed) {
+                    dismiss();
+                }
+            }
+        }, mBuilder.displayDelayed);
+    }
+
+    private void addContainer() {
+        if (mContainer != null) {
+            return;
+        }
+        mContainer = new LinearLayout(mBuilder.mActivity);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -78,112 +116,57 @@ public class StatusBarNotification implements NotificationInterface {
         // type 设置 Window 类别（层级）
         layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         layoutParams.gravity = Gravity.TOP;
-        container.setGravity(Gravity.CENTER);
-        mBuilder.mActivity.getWindow().addContentView(container, layoutParams);
-
-
-        WindowManager.LayoutParams textViewParam = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                0, 0,
-                PixelFormat.TRANSPARENT
-        );
-        TextView messageTextView = new TextView(mBuilder.mActivity);
-        messageTextView.setTag(IDENTITY);
-        messageTextView.setBackgroundColor(mBuilder.bgColor);
-        messageTextView.setTextColor(mBuilder.textColor);
-        messageTextView.setGravity(Gravity.CENTER);
-        messageTextView.setTextSize(mBuilder.textSize);
-        messageTextView.setPadding(0, mBuilder.verticalMargin, 0, mBuilder.verticalMargin);
-        messageTextView.setText(mBuilder.getMessage());
-        container.addView(messageTextView, textViewParam);
-        // 从上而下的动画
-        TranslateAnimation animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f
-        );
-        animation.setDuration(mBuilder.animationDuration);
-        messageTextView.startAnimation(animation);
-
-        mContainerList.add(container);
-
-        container.setTag(true);
-        container.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                TranslateAnimation animation = new TranslateAnimation(
-                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
-                );
-                animation.setDuration(mBuilder.animationDuration);
-                messageTextView.startAnimation(animation);
-                animation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        container.setTag(false);
-                        container.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-            }
-        }, mBuilder.displayDelayed);
+        mContainer.setGravity(Gravity.CENTER);
+        mBuilder.mActivity.getWindow().addContentView(mContainer, layoutParams);
     }
 
     @Override
     public void dismiss() {
-
-        int count = mContainerList.size();
-        for (int i = 0; i < count; i++) {
-            LinearLayout container = mContainerList.get(i);
-            boolean isShow = (boolean) container.getTag();
-            if (isShow) {
-                TranslateAnimation animation = new TranslateAnimation(
-                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
-                        Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
-                );
-                TextView messageTextView = container.findViewWithTag(IDENTITY);
-                animation.setDuration(mBuilder.animationDuration);
-                messageTextView.startAnimation(animation);
-                animation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        container.setVisibility(View.GONE);
-                        container.setTag(false);
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
+        int count = mContainer.getChildCount();
+        boolean isShow = (boolean) mContainer.getTag();
+        if (isShow) {
+            for (int i = 0; i < count - 1; i++) {
+                TextView msgTextView = (TextView) mContainer.getChildAt(i);
+                mContainer.removeView(msgTextView);
             }
+
+            if (count <= 0) {
+                gone();
+                return;
+            }
+
+            TextView lastMsgTextView = (TextView) mContainer.getChildAt(count - 1);
+
+            TranslateAnimation animation = new TranslateAnimation(
+                    Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
+                    Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
+            );
+            animation.setDuration(mBuilder.animationDuration);
+            lastMsgTextView.startAnimation(animation);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    gone();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
         }
     }
 
     @Override
     public void gone() {
-        int count = mContainerList.size();
-        for (int i = 0; i < count; i++) {
-            LinearLayout container = mContainerList.get(i);
-            boolean isShow = (boolean) container.getTag();
-            if (isShow) {
-                container.setVisibility(View.GONE);
-            }
-        }
+        mContainer.setVisibility(View.GONE);
+        mContainer.removeAllViews();
+        mContainer.setTag(false);
     }
 
     public static class Builder {
@@ -215,7 +198,6 @@ public class StatusBarNotification implements NotificationInterface {
                 mNotification = new StatusBarNotification(mActivity);
                 mNotification.setBuilder(this);
             }
-            mNotification.gone();
             mNotification.show();
             return mNotification;
         }

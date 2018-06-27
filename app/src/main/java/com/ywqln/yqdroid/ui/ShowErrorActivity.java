@@ -31,11 +31,12 @@ public class ShowErrorActivity extends BaseActivity {
     @Override
     protected void initViews() {
         mNotification = new StatusBarNotification.Builder(this)
-//                .setMessage("当前网络状态不佳，可下拉刷新尝试")
-                .setMessage("莉娜，我爱你")
+                .setMessage("这是提示消息")
                 .setTextColor(Color.WHITE)
-                .setBgColor(Color.argb(180, 0, 0, 255))
+                .setBgColor(Color.argb(180, 255, 0, 0))
                 .setDisplayDelayed(2000).build();
+
+        mNotification.show();
     }
 
     @Override
@@ -48,37 +49,37 @@ public class ShowErrorActivity extends BaseActivity {
     int count = 0;
 
     private void btn_click() {
+        mNotification.setMessage("当前网络状态不佳，可下拉刷新尝试");
+        mNotification.show();
 
 //        new StatusBarNotification.Builder(this)
-////                .setMessage("当前网络状态不佳，可下拉刷新尝试")
-//                .setMessage("莉娜，我爱你")
-//                .setTextColor(Color.BLUE)
-//                .setBgColor(Color.argb(180, 255, 0, 0))
-//                .setDisplayDelayed(2000)
-//                .show();
+//                .setMessage("当前网络状态不佳，可下拉刷新尝试")
+//                .setTextColor(Color.WHITE)
+//                .setBgColor(Color.argb(180, 0, 255, 0))
+//                .setDisplayDelayed(2000).show();
 
-        count = 0;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10; i++) {
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    count++;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mNotification.setMessage("你好，莉娜" + count);
-                            mNotification.show();
-                        }
-                    });
-                }
-            }
-        }).start();
+//        count = 0;
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < 10; i++) {
+//                    try {
+//                        Thread.sleep(200);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    count++;
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mNotification.setMessage("这是提示消息" + count);
+//                            mNotification.show();
+//                        }
+//                    });
+//                }
+//            }
+//        }).start();
 
     }
 }
