@@ -42,9 +42,7 @@ public class ShowErrorActivity extends BaseActivity {
 
     @Override
     protected void initComplete() {
-        clickButton.setOnClickListener(view -> {
-            btn_click();
-        });
+        clickButton.setOnClickListener(view -> btn_click());
     }
 
     private void btn_click() {
@@ -52,11 +50,11 @@ public class ShowErrorActivity extends BaseActivity {
         mNotification.show();
 
         // 方式2
-        new StatusBarNotification.Builder(this)
-                .setMessage("当前网络状态不佳，可下拉刷新尝试")
-                .setTextColor(Color.WHITE)
-                .setBgColor(Color.argb(180, 0, 255, 0))
-                .setDisplayDelayed(2000).show();
+//        new StatusBarNotification.Builder(this)
+//                .setMessage("当前网络状态不佳，可下拉刷新尝试")
+//                .setTextColor(Color.WHITE)
+//                .setBgColor(Color.argb(180, 0, 255, 0))
+//                .setDisplayDelayed(2000).show();
 
     }
 }

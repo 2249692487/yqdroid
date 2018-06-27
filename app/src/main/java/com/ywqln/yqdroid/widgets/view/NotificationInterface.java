@@ -8,6 +8,7 @@ package com.ywqln.yqdroid.widgets.view;
  * @date 2018/6/26
  */
 public interface NotificationInterface {
+    boolean isShow();
     void dismiss();
     void gone();
 }

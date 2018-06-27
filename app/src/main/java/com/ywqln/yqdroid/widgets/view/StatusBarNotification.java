@@ -121,10 +121,18 @@ public class StatusBarNotification implements NotificationInterface {
     }
 
     @Override
+    public boolean isShow() {
+        if (mContainer == null) {
+            return false;
+        }
+
+        return (boolean) mContainer.getTag();
+    }
+
+    @Override
     public void dismiss() {
         int count = mContainer.getChildCount();
-        boolean isShow = (boolean) mContainer.getTag();
-        if (isShow) {
+        if (isShow()) {
             for (int i = 0; i < count - 1; i++) {
                 TextView msgTextView = (TextView) mContainer.getChildAt(i);
                 mContainer.removeView(msgTextView);
