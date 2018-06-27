@@ -30,7 +30,6 @@ import com.ywqln.yqdroid.util.MD5Util;
 import com.ywqln.yqdroid.util.SprfUtil;
 import com.ywqln.yqdroid.util.StringUtil;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -106,18 +105,19 @@ public class LoginActivity extends BaseActivity {
                         "http://thirdwx.qlogo"
                                 + ".cn/mmopen/vi_32/DYAIOgq83eqW5uArXTCfB9QticvrqriaoPOOZbG7edwS18shArAntdpNNs9E9ZdkibJJ12cPLT7QaUM2AVXZibakHQ/132");
 
-
-                logo.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Blurry.with(LoginActivity.this)
-                                .radius(2)
-                                .sampling(2)
-                                .color(Color.argb(66, 255, 255, 255))
-                                .from(bitmap5)
-                                .into(logo);
-                    }
-                });
+                if (bitmap5 != null) {
+                    logo.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Blurry.with(LoginActivity.this)
+                                    .radius(2)
+                                    .sampling(2)
+                                    .color(Color.argb(66, 255, 255, 255))
+                                    .from(bitmap5)
+                                    .into(logo);
+                        }
+                    });
+                }
             }
         }).start();
     }
@@ -134,7 +134,7 @@ public class LoginActivity extends BaseActivity {
             map = BitmapFactory.decodeStream(in);
             in.close();
             Log.e("qln", "map: " + map);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

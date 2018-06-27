@@ -23,10 +23,8 @@ import java.util.List;
  */
 public class StatusBarNotification implements NotificationInterface {
     private Builder mBuilder;
-//    private LinearLayout mContainer;
-//    private TextView mMessageTextView;
-
     private List<LinearLayout> mContainerList;
+    private static String IDENTITY ="msgView";
 
     protected StatusBarNotification(Activity activity) {
         mContainerList = new ArrayList<>();
@@ -91,7 +89,7 @@ public class StatusBarNotification implements NotificationInterface {
                 PixelFormat.TRANSPARENT
         );
         TextView messageTextView = new TextView(mBuilder.mActivity);
-        messageTextView.setTag("msgView");
+        messageTextView.setTag(IDENTITY);
         messageTextView.setBackgroundColor(mBuilder.bgColor);
         messageTextView.setTextColor(mBuilder.textColor);
         messageTextView.setGravity(Gravity.CENTER);
@@ -152,7 +150,7 @@ public class StatusBarNotification implements NotificationInterface {
                         Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f,
                         Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, -1.0f
                 );
-                TextView messageTextView = container.findViewWithTag("msgView");
+                TextView messageTextView = container.findViewWithTag(IDENTITY);
                 animation.setDuration(mBuilder.animationDuration);
                 messageTextView.startAnimation(animation);
                 animation.setAnimationListener(new Animation.AnimationListener() {
