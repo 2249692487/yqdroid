@@ -1,9 +1,9 @@
 package com.ywqln.yqdroid.ui;
 
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.ywqln.yqdroid.R;
@@ -27,6 +27,10 @@ public class ShowErrorActivity extends BaseActivity {
 
     @BindView(R.id.imageView)
     public ImageView imageView;
+
+    @BindView(R.id.editText)
+    public EditText editText;
+
 
     private StatusBarNotification mNotification;
 
@@ -66,11 +70,24 @@ public class ShowErrorActivity extends BaseActivity {
     }
 
     private void btn_click() {
-        mNotification.setMessage("当前网络状态不佳，可下拉刷新尝试");
+
+        int position = 0;
+        try {
+            position = Integer.parseInt(editText.getText().toString().trim());
+        } catch (Exception e) {
+            mNotification.setMessage("不要调皮，请输入数字哦😝");
+            mNotification.show();
+            return;
+        }
+
+
+        String number = fibonacci(position);
+
+        mNotification.setMessage("结果是：" + number);
         mNotification.show();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.create();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.create();
 
 
         // 方式2
@@ -80,5 +97,26 @@ public class ShowErrorActivity extends BaseActivity {
 //                .setBgColor(Color.argb(180, 0, 255, 0))
 //                .setDisplayDelayed(2000).show();
 
+    }
+
+
+    private String fibonacci(int position) {
+        if (position == 0) {
+            return "0";
+        }
+        if (position == 1) {
+            return "1";
+        }
+        if (position < 0) {
+            return "不要调皮，请输入正数哦😝";
+        }
+        int[] fibonacciArr = new int[position];
+        fibonacciArr[0] = 0;
+        fibonacciArr[1] = 1;
+
+        for (int i = 2; i < position; i++) {
+            fibonacciArr[i] = fibonacciArr[i - 2] + fibonacciArr[i - 1];
+        }
+        return String.valueOf(fibonacciArr[position - 1]);
     }
 }
