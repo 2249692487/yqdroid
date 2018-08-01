@@ -18,11 +18,22 @@
               android:layout_marginBottom="80dp"
               android:inputType="number"/>
 
-    <Button android:id="@+id/clickButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="30dp"
-            android:text="点我啊"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentBottom="true"
+                  android:layout_marginBottom="30dp"
+                  android:orientation="horizontal">
+        <Button android:id="@+id/clickButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="计算结果"/>
+        <Button android:id="@+id/starButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="打星✨星"/>
+    </LinearLayout>
+
 
 </RelativeLayout>

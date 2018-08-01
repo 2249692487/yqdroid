@@ -2,9 +2,12 @@ package com.ywqln.yqdroid.ui;
 
 import android.graphics.Color;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ywqln.yqdroid.R;
 import com.ywqln.yqdroid.base.BaseActivity;
@@ -31,6 +34,8 @@ public class ShowErrorActivity extends BaseActivity {
     @BindView(R.id.editText)
     public EditText editText;
 
+    @BindView(R.id.starButton)
+    public Button starButton;
 
     private StatusBarNotification mNotification;
 
@@ -54,6 +59,7 @@ public class ShowErrorActivity extends BaseActivity {
     @Override
     protected void initComplete() {
         clickButton.setOnClickListener(view -> btn_click());
+        starButton.setOnClickListener(view -> star_click());
 
         imageView.setOnClickListener(new MultiTapUtil()
                 .setInterval(300)
@@ -99,7 +105,6 @@ public class ShowErrorActivity extends BaseActivity {
 
     }
 
-
     private String fibonacci(int position) {
         if (position == 0) {
             return "0";
@@ -118,5 +123,45 @@ public class ShowErrorActivity extends BaseActivity {
             fibonacciArr[i] = fibonacciArr[i - 2] + fibonacciArr[i - 1];
         }
         return String.valueOf(fibonacciArr[position - 1]);
+    }
+
+    private void star_click() {
+        LinearLayout container = new LinearLayout(this);
+        container.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        container.setBackgroundColor(Color.parseColor("#88222288"));
+
+//        for (int i = 0; i < 10; i++) {
+//            // 添加每一行的容器
+//            LinearLayout lineContainer = new LinearLayout(this);
+//            LinearLayout.LayoutParams lineParams = new LinearLayout.LayoutParams(
+//                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            container.addView(lineContainer, lineParams);
+//
+//            // 给每一行容器添加星星✨
+//            for (int j = 0; j < i; j++) {
+//                TextView startView = new TextView(this);
+//                startView.setText("★");
+//                lineContainer.addView(startView);
+//            }
+//        }
+
+        for (int i = 10; i > 0; i--) {
+            // 添加每一行的容器
+            LinearLayout lineContainer = new LinearLayout(this);
+            LinearLayout.LayoutParams lineParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            container.addView(lineContainer, lineParams);
+
+            // 给每一行容器添加星星✨
+            for (int j = 0; j < i; j++) {
+                TextView startView = new TextView(this);
+                startView.setText("★");
+                lineContainer.addView(startView);
+            }
+        }
+
+        this.addContentView(container, containerParams);
     }
 }
